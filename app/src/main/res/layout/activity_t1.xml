@@ -1,0 +1,73 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <com.example.hmyd.mytestandroid_studio.view.MyScrollerView
+        android:id="@+id/myScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <RelativeLayout
+            android:id="@+id/main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <RelativeLayout
+                android:id="@+id/top_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true" >
+
+                <TextView
+                    android:id="@+id/text0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:text="测试测试测试测试测试测试测试测试测试测试"
+                    android:textSize="56sp" />
+
+                <TextView
+                    android:id="@+id/text1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/text0"
+                    android:text="测试测试测试测试测试测试测试测试测试测试"
+                    android:textColor="@android:color/holo_orange_dark"
+                    android:textSize="56sp" />
+            </RelativeLayout>
+
+            <!-- 为防止浮动布局改变之后发生错版，所以这里加了一个父布局-->
+            <RelativeLayout
+                android:id="@+id/bottom_view"
+                android:layout_width="match_parent"
+                android:layout_height="50dip"
+                android:layout_below="@id/top_view" >
+
+                <TextView
+                    android:id="@+id/head1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/holo_purple"
+                    android:gravity="center"
+                    android:text="这个是下面那个listview的头标题" 
+                    android:textSize="24sp"/>
+            </RelativeLayout>
+            
+            <ListView
+                	android:layout_below="@id/bottom_view"
+                    android:id="@+id/mylist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+                </ListView>
+        </RelativeLayout>
+    </com.example.hmyd.mytestandroid_studio.view.MyScrollerView>
+
+    <RelativeLayout
+        android:id="@+id/head2"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:layout_alignParentTop="true" >
+    </RelativeLayout>
+
+</RelativeLayout>

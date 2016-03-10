@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">我的测试demo集</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_t1">动态浮动标题【T1Activity】</string>
+    <string name="title_activity_main">recyclerview的使用【MainActivty】</string>
+    <string name="title_activity_pic_power">图片处理【PicPowerActivity】</string>
+    <string name="title_activity_home">首页【HomeActivity】</string>
+    
+    
+    
+    <string name="choose_please">请选择功能</string>
+    <string name="test">测试0</string>
+    <string name="test1">测试1</string>
+    <string name="recyclerViewTest">recycler测试</string>
+    <string name="function">功能</string>
+
+</resources>
