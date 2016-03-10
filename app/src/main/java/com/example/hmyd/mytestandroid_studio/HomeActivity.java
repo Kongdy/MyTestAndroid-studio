@@ -4,16 +4,10 @@ import com.example.hmyd.mytestandroid_studio.adapter.MySimpleAdapter;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.widget.AdapterView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-
-import java.lang.reflect.Field;
 
 /**
  * app首页
@@ -28,12 +22,7 @@ public class HomeActivity extends BasicActivity {
     private ListView function_list;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void setParams() {
+    public void setParams(Bundle savedInstanceState) {
         setContentView(R.layout.activity_home);
         function_list = (ListView) findViewById(R.id.function_list);
         MySimpleAdapter adapter = new MySimpleAdapter(getApplicationContext(),

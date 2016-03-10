@@ -15,11 +15,14 @@ import android.widget.TextView;
 import com.example.hmyd.mytestandroid_studio.adapter.MyRecyclerAdapter;
 import com.example.hmyd.mytestandroid_studio.model.TModel;
 
+/**
+ * recyclerview测试和获取root权限
+ */
 public class MainActivity extends BasicActivity {
 
 	private RecyclerView myR;
 
-	private List<TModel> data = new ArrayList<TModel>();
+	private List<TModel> data = new ArrayList<>();
 
 //	private int[] resids = { R.drawable.__00000, R.drawable.__00001,
 //			R.drawable.__00002, R.drawable.__00003, R.drawable.__00004,
@@ -40,46 +43,7 @@ public class MainActivity extends BasicActivity {
 //			R.drawable.__00047,R.drawable.__00048,R.drawable.__00049,
 //			R.drawable.__00050,R.drawable.__00051,R.drawable.__00052};
 	
-	private List<Integer> resids = new ArrayList<Integer>();
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		Log.d("main", "start...............");
-		myR = (RecyclerView) findViewById(R.id.my_r_view);
-		// ����drawable��������Դ
-		try {
-			Field[] fields = R.drawable.class.getDeclaredFields();
-			for (Field field : fields) {
-				int s = field.getInt(new R.drawable());
-				resids.add(s);
-			}
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		}
-		
-		LinearLayoutManager manager = new LinearLayoutManager(this);
-		myR.setLayoutManager(manager);
-		for (int i = 0; i < resids.size(); i++) {
-			TModel m = new TModel();
-			m.str = "tttttttttttttttttttt" + i;
-			m.resid = resids.get(i);
-			data.add(m);
-		}
-		MyRecyclerAdapter adapter = new MyRecyclerAdapter(
-				getApplicationContext(), data);
-		Log.d("main", "over constructor");
-		myR.setAdapter(adapter);
-		// boolean isGet = upgradeRootPermission(getPackageCodePath());
-		// if(isGet) {
-		// ((TextView)findViewById(R.id.tv)).setText("��ȡrootȨ�޳ɹ�");
-		// } else {
-		// ((TextView)findViewById(R.id.tv)).setText("��ȡrootȨ��ʧ��");
-		// }
-	}
+	private List<Integer> resids = new ArrayList<>();
 
 	public static boolean upgradeRootPermission(String pkgCodePath) {
 		Process process = null;
@@ -107,8 +71,40 @@ public class MainActivity extends BasicActivity {
 	}
 
 	@Override
-	public void setParams() {
-		// TODO Auto-generated method stub
-		
+	public void setParams(Bundle savedInstanceState) {
+		setContentView(R.layout.activity_main);
+		Log.d("main", "start...............");
+		myR = (RecyclerView) findViewById(R.id.my_r_view);
+		// ����drawable��������Դ
+		try {
+			Field[] fields = R.drawable.class.getDeclaredFields();
+			for (Field field : fields) {
+				int s = field.getInt(new R.drawable());
+				resids.add(s);
+			}
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		}
+
+		LinearLayoutManager manager = new LinearLayoutManager(this);
+		myR.setLayoutManager(manager);
+		for (int i = 0; i < resids.size(); i++) {
+			TModel m = new TModel();
+			m.str = "tttttttttttttttttttt" + i;
+			m.resid = resids.get(i);
+			data.add(m);
+		}
+		MyRecyclerAdapter adapter = new MyRecyclerAdapter(
+				getApplicationContext(), data);
+		Log.d("main", "over constructor");
+		myR.setAdapter(adapter);
+		// boolean isGet = upgradeRootPermission(getPackageCodePath());
+		// if(isGet) {
+		// ((TextView)findViewById(R.id.tv)).setText("��ȡrootȨ�޳ɹ�");
+		// } else {
+		// ((TextView)findViewById(R.id.tv)).setText("��ȡrootȨ��ʧ��");
+		// }
 	}
 }

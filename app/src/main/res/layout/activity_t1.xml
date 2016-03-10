@@ -1,9 +1,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/my_tool_bar"
+        layout="@layout/view_title_layout">
+    </include>
 
     <com.example.hmyd.mytestandroid_studio.view.MyScrollerView
+        android:layout_below="@id/my_tool_bar"
         android:id="@+id/myScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
@@ -67,7 +72,7 @@
         android:id="@+id/head2"
         android:layout_width="match_parent"
         android:layout_height="50dip"
-        android:layout_alignParentTop="true" >
+        android:layout_below="@id/my_tool_bar">
     </RelativeLayout>
 
 </RelativeLayout>

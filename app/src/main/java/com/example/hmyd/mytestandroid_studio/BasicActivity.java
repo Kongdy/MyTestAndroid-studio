@@ -1,71 +1,98 @@
 package com.example.hmyd.mytestandroid_studio;
 
-import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.ViewConfiguration;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
-import java.lang.reflect.Field;
-
 /**
- * activity����
+ * activity基类
  * @author wangk
  */
-public abstract class BasicActivity extends Activity {
+public abstract class BasicActivity extends AppCompatActivity {
 	
 	public String label;
-	
+
+	private Toolbar toolbar;
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected final void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setParams();
+		setParams(savedInstanceState);
+		//透明状态栏
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+		//透明导航栏
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 		AppBasic.getInstance().addToActivityStacks(this, label==null?"":label);
+		declareParamsSetting();
 	}
-	public abstract void setParams();
+
+
+
+	private void declareParamsSetting() {
+		toolbar = (Toolbar) findViewById(R.id.my_tool_bar);
+		if(toolbar != null) {
+			toolbar.setTitle(getTitle());
+			toolbar.setTitleTextColor(Color.WHITE);
+			toolbar.setNavigationIcon(R.mipmap.ic_launcher);
+			setSupportActionBar(toolbar);
+		} else {
+//			Toolbar.LayoutParams params = new Toolbar.LayoutParams();
+//
+//			addContentView(LayoutInflater.from(this).inflate(R.layout.view_title_layout),);
+		}
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
-		getMenuInflater().inflate(R.menu.base_menu, menu);
+		getMenuInflater().inflate(R.menu.menu_main,menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
-
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		return super.onPrepareOptionsMenu(menu);
-	}
-
-//	public void getOverflowMenu() {
-//		try {
-//			ViewConfiguration config = ViewConfiguration.get(this);
-//			Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-//			if(menuKeyField != null) {
-//				menuKeyField.setAccessible(true);
-//				menuKeyField.setBoolean(config,false);
-//			}
-//		} catch (NoSuchFieldException e) {
-//			e.printStackTrace();
-//		} catch (IllegalAccessException e) {
-//			e.printStackTrace();
-//		}
-//	}
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-
-		switch (item.getItemId()) {
+		switch (item.getItemId()){
+			case R.id.function_menu:
+				Toast.makeText(getApplicationContext(),"functionMenu",Toast.LENGTH_SHORT).show();
+				break;
 			case R.id.test1:
-				Toast.makeText(this, "test1", Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(),getString(R.string.test),Toast.LENGTH_SHORT).show();
 				break;
 			case R.id.test2:
-				Toast.makeText(this, "test2", Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(),getString(R.string.test1),Toast.LENGTH_SHORT).show();
 				break;
 			default:
 				break;
 		}
-		return false;
+
+		return super.onOptionsItemSelected(item);
 	}
+
+	public View getRootView() {
+		return ((ViewGroup)findViewById(android.R.id.content)).getChildAt(0);
+	}
+
+	public View getRootViewGroup() {
+		return ((ViewGroup)findViewById(android.R.id.content));
+	}
+
+	/**
+	 * 获取标题栏toolbar对象
+	 * @return
+     */
+	public Toolbar getToolbar() {
+		return toolbar;
+	}
+
+
+	public abstract void setParams(Bundle savedInstanceState);
+
 }

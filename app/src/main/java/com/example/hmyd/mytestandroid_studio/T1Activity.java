@@ -48,68 +48,6 @@ public class T1Activity extends BasicActivity {
 	
 	private RelativeLayout bottom_view;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_t1);
-		data = new ArrayList<String>();
-		for (int i = 0; i < 200; i++) {
-			data.add("aaaaaa"
-					+ Base64.encode(String.valueOf(i + 10).getBytes(),
-							Base64.DEFAULT));
-		}
-		// ��ʼ����Ļ��С
-		Utils.initScreenSize(this);
-		
-		t0 = (TextView) findViewById(R.id.text0); // �������Ӷ���λ
-		t1 = (TextView) findViewById(R.id.text1); // ����Ԥ��ռλ
-		h1 = (TextView) findViewById(R.id.head1); // listviewͷ����
-		l1 = (ListView) findViewById(R.id.mylist); // �б�
-		main_content = (RelativeLayout) findViewById(R.id.main_layout); // ����������
-		myScrollView = (MyScrollerView) findViewById(R.id.myScrollView); // ����㻬������
-		top_view = (RelativeLayout) findViewById(R.id.top_view); // ��������
-		head2 = (RelativeLayout) findViewById(R.id.head2); // ��������
-		bottom_view = (RelativeLayout) findViewById(R.id.bottom_view); // �������ָ�����
-		
-		// δ��ֹ��������������ʱ��listview����Ϊ���ֱ仯ͻȻ��Ӧ���֣���������oͷ���⸸����һ���߶�
-//		ViewGroup.LayoutParams params = h1.getLayoutParams();
-//		ViewGroup.LayoutParams params1 = bottom_view.getLayoutParams();
-//		params1.height = params.height;
-//		params1.width = params.width;
-//		
-//		bottom_view.setLayoutParams(params1);
-//		head2.setLayoutParams(params1);
-
-		MyArrayAdapter adapter = new MyArrayAdapter(getApplicationContext(),
-				data, l1);
-		l1.setAdapter(adapter);
-		adapter.forceChangeListviewHeight();
-		myScrollView.smoothScrollTo(0, 0); // ��Ϊ�ı�listview�߶Ⱥ����ɿ�ʼ���治�ڶ�����������ʻ��ض���
-		isHiddenAll = false;
-		myScrollView.setOnScrollViewListener(new ScrollViewListener() {
-
-			@Override
-			public void ScrollChanged(MyScrollerView view, int x, int y,
-					int oldx, int oldy) {
-				if (oldy > (l1.getY()-h1.getHeight())&& oldy != 0 && y!= 0) {
-				//	System.out.println("���y:" + y + ",h1.getY():" + h1.getY()
-				//			+ ",oldy:" + oldy);
-					if(h1.getParent()!= head2) {
-						bottom_view.removeView(h1);
-						head2.addView(h1);
-					}
-				} else {
-				//	System.out.println("δ���y:" + y + ",h1.getY():" + h1.getY()
-				//			+ ",oldy:" + oldy);
-					if(h1.getParent()!= bottom_view) {
-						head2.removeView(h1);
-						bottom_view.addView(h1);
-					}
-				}
-			}
-		});
-	}
-
 	/**
 	 * ������Ļ��ǰ���������һЩ���ֵ���
 	 */
@@ -147,8 +85,63 @@ public class T1Activity extends BasicActivity {
 	}
 
 	@Override
-	public void setParams() {
-		// TODO Auto-generated method stub
-		
+	public void setParams(Bundle savedInstanceState) {
+		setContentView(R.layout.activity_t1);
+		data = new ArrayList<String>();
+		for (int i = 0; i < 200; i++) {
+			data.add("aaaaaa"
+					+ Base64.encode(String.valueOf(i + 10).getBytes(),
+					Base64.DEFAULT));
+		}
+		// ��ʼ����Ļ��С
+		Utils.initScreenSize(this);
+
+		t0 = (TextView) findViewById(R.id.text0); // �������Ӷ���λ
+		t1 = (TextView) findViewById(R.id.text1); // ����Ԥ��ռλ
+		h1 = (TextView) findViewById(R.id.head1); // listviewͷ����
+		l1 = (ListView) findViewById(R.id.mylist); // �б�
+		main_content = (RelativeLayout) findViewById(R.id.main_layout); // ����������
+		myScrollView = (MyScrollerView) findViewById(R.id.myScrollView); // ����㻬������
+		top_view = (RelativeLayout) findViewById(R.id.top_view); // ��������
+		head2 = (RelativeLayout) findViewById(R.id.head2); // ��������
+		bottom_view = (RelativeLayout) findViewById(R.id.bottom_view); // �������ָ�����
+
+		// δ��ֹ��������������ʱ��listview����Ϊ���ֱ仯ͻȻ��Ӧ���֣���������oͷ���⸸����һ���߶�
+//		ViewGroup.LayoutParams params = h1.getLayoutParams();
+//		ViewGroup.LayoutParams params1 = bottom_view.getLayoutParams();
+//		params1.height = params.height;
+//		params1.width = params.width;
+//
+//		bottom_view.setLayoutParams(params1);
+//		head2.setLayoutParams(params1);
+
+		MyArrayAdapter adapter = new MyArrayAdapter(getApplicationContext(),
+				data, l1);
+		l1.setAdapter(adapter);
+		adapter.forceChangeListviewHeight();
+		myScrollView.smoothScrollTo(0, 0); // ��Ϊ�ı�listview�߶Ⱥ����ɿ�ʼ���治�ڶ�����������ʻ��ض���
+		isHiddenAll = false;
+		myScrollView.setOnScrollViewListener(new ScrollViewListener() {
+
+			@Override
+			public void ScrollChanged(MyScrollerView view, int x, int y,
+									  int oldx, int oldy) {
+				if (oldy > (l1.getY()-h1.getHeight())&& oldy != 0 && y!= 0) {
+					//	System.out.println("���y:" + y + ",h1.getY():" + h1.getY()
+					//			+ ",oldy:" + oldy);
+					if(h1.getParent()!= head2) {
+						bottom_view.removeView(h1);
+						head2.addView(h1);
+					}
+				} else {
+					//	System.out.println("δ���y:" + y + ",h1.getY():" + h1.getY()
+					//			+ ",oldy:" + oldy);
+					if(h1.getParent()!= bottom_view) {
+						head2.removeView(h1);
+						bottom_view.addView(h1);
+					}
+				}
+			}
+		});
 	}
 }

@@ -3,20 +3,14 @@ package com.example.hmyd.mytestandroid_studio;
 import android.os.Bundle;
 
 /**
- * ͼƬЧ��
+ * 图片增强
  * @author wangk
  *
  */
-public class PicPowerActivity extends BasicFragmentActivity {
+public class PicPowerActivity extends BasicActivity {
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public void setParams(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_pic_power);
-	}
-
-	@Override
-	public void setParams() {
-		
 	}
 }
