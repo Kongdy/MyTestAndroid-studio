@@ -7,13 +7,17 @@ import java.util.List;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.hmyd.mytestandroid_studio.adapter.MyRecyclerAdapter;
 import com.example.hmyd.mytestandroid_studio.model.TModel;
+import com.example.hmyd.mytestandroid_studio.tools.Utils;
 
 /**
  * recyclerview测试和获取root权限
@@ -21,6 +25,8 @@ import com.example.hmyd.mytestandroid_studio.model.TModel;
 public class MainActivity extends BasicActivity {
 
 	private RecyclerView myR;
+
+    private ImageButton back_top;
 
 	private List<TModel> data = new ArrayList<>();
 
@@ -50,7 +56,7 @@ public class MainActivity extends BasicActivity {
 		DataOutputStream os = null;
 		try {
 			String cmd = "chmod 777 " + pkgCodePath;
-			process = Runtime.getRuntime().exec("su"); // �л���root�ʺ�
+			process = Runtime.getRuntime().exec("su"); // 拉取root权限
 			os = new DataOutputStream(process.getOutputStream());
 			os.writeBytes(cmd + "\n");
 			os.writeBytes("exit\n");
@@ -70,17 +76,31 @@ public class MainActivity extends BasicActivity {
 		return true;
 	}
 
-	@Override
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.back_top:
+                myR.scrollTo(0,0);
+                break;
+        }
+    }
+
+    @Override
 	public void setParams(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_main);
 		Log.d("main", "start...............");
 		myR = (RecyclerView) findViewById(R.id.my_r_view);
+        back_top = (ImageButton) findViewById(R.id.back_top);
+        back_top.setOnClickListener(this);
+
 		// ����drawable��������Դ
 		try {
-			Field[] fields = R.drawable.class.getDeclaredFields();
+			Field[] fields = R.drawable.class.getFields();
 			for (Field field : fields) {
-				int s = field.getInt(new R.drawable());
-				resids.add(s);
+                if(field != null && field.getName().startsWith("__")) {
+                    int s = field.getInt(new R.drawable());
+                    resids.add(s);
+                }
 			}
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
@@ -90,21 +110,50 @@ public class MainActivity extends BasicActivity {
 
 		LinearLayoutManager manager = new LinearLayoutManager(this);
 		myR.setLayoutManager(manager);
-		for (int i = 0; i < resids.size(); i++) {
+		// 设置动画
+		myR.setItemAnimator(new DefaultItemAnimator());
+		// 设置固定大小
+		//myR.setHasFixedSize(true);
+
+
+		for (int i = 0; i < (resids.size()<1?100:resids.size()); i++) {
 			TModel m = new TModel();
 			m.str = "tttttttttttttttttttt" + i;
-			m.resid = resids.get(i);
+			m.resid = resids.size()<1?0:resids.get(i);
 			data.add(m);
 		}
 		MyRecyclerAdapter adapter = new MyRecyclerAdapter(
 				getApplicationContext(), data);
 		Log.d("main", "over constructor");
 		myR.setAdapter(adapter);
+
+
+        // 滚动事件，滚动距离超过一个屏，显示返回顶部按钮
+        myR.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(dy> Utils.SCREEN_HEIGHT) {
+                    back_top.setVisibility(View.VISIBLE);
+                } else {
+                    back_top.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+       // myR.scrollTo(0,0);
+        // 获取root权限
 		// boolean isGet = upgradeRootPermission(getPackageCodePath());
 		// if(isGet) {
-		// ((TextView)findViewById(R.id.tv)).setText("��ȡrootȨ�޳ɹ�");
+		// ((TextView)findViewById(R.id.tv)).setText("获得root权限成功！");
 		// } else {
-		// ((TextView)findViewById(R.id.tv)).setText("��ȡrootȨ��ʧ��");
+		// ((TextView)findViewById(R.id.tv)).setText("获得root失败！");
 		// }
 	}
+
 }

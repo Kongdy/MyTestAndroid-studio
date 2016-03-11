@@ -3,27 +3,30 @@ package com.example.hmyd.mytestandroid_studio.tools;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Environment;
 import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
 import android.util.DisplayMetrics;
 import android.view.View;
 
+import java.io.File;
+
 /**
- * ������
+ * 工具帮助类
  * @author wangk
  */
 public class Utils {
 	/**
-	 * ��Ļ���
+	 * 屏幕宽度
 	 */
 	public static int SCREENT_WIDTH_;
 	/**
-	 * ��Ļ�߶�
+	 * 屏幕高度
 	 */
 	public static int SCREEN_HEIGHT;
 	
 	/**
-	 * ��ʼ����Ļ��С����
+	 * 初始化屏幕大小
 	 */
 	public static void initScreenSize(Context context) {
 		DisplayMetrics metrics = new DisplayMetrics();
@@ -31,13 +34,52 @@ public class Utils {
 		SCREENT_WIDTH_ = metrics.widthPixels;
 		SCREEN_HEIGHT = metrics.heightPixels;
 	}
-	
+
+
+    /**
+     * 获取sd卡跟目录
+     * @return
+     */
+    public static File getSDCardFile() {
+        // 判断是否有sd卡
+        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            File file = new File(Environment.getExternalStorageDirectory()+File.separator+"myCache");
+            if(!file.exists()) {
+                file.mkdir();
+            }
+            return file;
+        }
+        return null;
+    }
+
+    /**
+     * 获取可用的图片缓存存储目录
+     * @param context
+     * @return
+     */
+    public static String getPicSavePath(Context context) {
+        File f = new File(getSDCardFile().getPath()+File.separator+"picCache");
+        if(!f.exists()) {
+            f.mkdir();
+        }
+        return f==null?getAppCacheFile(context).getPath():f.getPath();
+    }
+
+    /**
+     * 获取app缓存目录
+     * @param context
+     * @return
+     */
+    public static File getAppCacheFile(Context context) {
+        return context.getExternalCacheDir();
+    }
+
 	/**
-	 * ����������bitmap����ë��������
-	 * ��Ϊ��Ͱ汾����ʹ�ã��������Ľϴ�
-	 * @param sentBitmap ͼƬ
-	 * @param radius ģ���뾶
-	 * @param canReuseInBitmap �Ƿ񸲸ǵ��ڴ���ԭ����bitmap
+	 * 高斯/毛玻璃模糊，使用java的方法，但是当模糊半径比较大的情况的下
+     * 可能会性能不足
+	 * @param sentBitmap 图片
+	 * @param radius 模糊半径
+	 * @param canReuseInBitmap 内存中是否覆盖掉原来的bitmap
 	 * @return
 	 */
 	public static Bitmap doBlur(Bitmap sentBitmap, int radius, boolean canReuseInBitmap) {
@@ -276,10 +318,13 @@ public class Utils {
     }
 	
 	/**
-	 * ����������ͼƬ����ë��������
-	 * ����android�ṩ�Ľӿ�
-	 * ����4.0���ϵİ汾
-	 * RenderScript�ӿڣ�����ë����Ч���⻹��ʵ�ֺܶ�����3DЧ��
+	 * 将传进来的图片进行模糊处理/毛玻璃处理
+     * 调用android提供的接口
+     * 兼容4.0以上的版本
+     * RenderScript接口，除了毛玻璃外还能实现很多特殊的3D效果
+     *
+     * 未完善
+     *
 	 * @param sentBitmap
 	 * @param view
 	 */

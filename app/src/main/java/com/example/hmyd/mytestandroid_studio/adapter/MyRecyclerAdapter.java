@@ -14,13 +14,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.hmyd.mytestandroid_studio.HomeActivity;
 import com.example.hmyd.mytestandroid_studio.R;
 import com.example.hmyd.mytestandroid_studio.model.TModel;
+import com.example.hmyd.mytestandroid_studio.tools.BitmapHelp;
 
 
 /**
- * recyclerView������
+ * recyclerView适配
  * @author wangk
  *
  */
@@ -28,7 +28,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
 	
 	private Context mContext;
 	private List<TModel> data;
-	
+
 	public MyRecyclerAdapter(Context mContext, List<TModel> data) {
 		this.mContext = mContext;
 		this.data = data;
@@ -36,7 +36,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
 
 	@Override
 	public int getItemCount() {
-		return data.size();
+		return data==null?0:data.size();
 	}
 
 	@Override
@@ -45,13 +45,14 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
 		MyViewHolder holder = (MyViewHolder) viewholder;
 		holder.positon = i;
 		holder.t1.setText(data.get(i).str);
-		holder.i1.setImageResource(data.get(i).resid);
+		// 三级缓存加载
+		BitmapHelp.getInstance(mContext).displayBitmapFromResource(data.get(i).resid,holder.i1);
 	}
 
 	@Override
 	public ViewHolder onCreateViewHolder(ViewGroup viewgroup, int position) {
 		Log.d("madapter", "create:"+position);
-		View view = LayoutInflater.from(viewgroup.getContext()).inflate(R.layout.view_recycler_layout, null);
+		View view = LayoutInflater.from(viewgroup.getContext()).inflate(R.layout.view_recycler_layout, viewgroup,false);
 		ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 		view.setLayoutParams(params);

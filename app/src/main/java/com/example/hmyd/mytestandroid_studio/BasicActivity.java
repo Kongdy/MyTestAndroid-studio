@@ -4,20 +4,21 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.example.hmyd.mytestandroid_studio.tools.Utils;
+
 /**
  * activity基类
  * @author wangk
  */
-public abstract class BasicActivity extends AppCompatActivity {
+public abstract class BasicActivity extends AppCompatActivity
+									implements View.OnClickListener {
 	
 	public String label;
 
@@ -27,6 +28,8 @@ public abstract class BasicActivity extends AppCompatActivity {
 	protected final void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setParams(savedInstanceState);
+		// 初始化屏幕宽高
+		Utils.initScreenSize(this);
 		//透明状态栏
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 		//透明导航栏
@@ -46,7 +49,6 @@ public abstract class BasicActivity extends AppCompatActivity {
 			setSupportActionBar(toolbar);
 		} else {
 //			Toolbar.LayoutParams params = new Toolbar.LayoutParams();
-//
 //			addContentView(LayoutInflater.from(this).inflate(R.layout.view_title_layout),);
 		}
 	}
@@ -93,6 +95,17 @@ public abstract class BasicActivity extends AppCompatActivity {
 	}
 
 
+	/**
+	 * 点击事件
+	 * @param v
+     */
+	@Override
+	public abstract void onClick(View v);
+
+	/**
+	 *
+	 * @param savedInstanceState
+     */
 	public abstract void setParams(Bundle savedInstanceState);
 
 }

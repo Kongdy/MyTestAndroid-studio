@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -48,8 +49,10 @@ public class T1Activity extends BasicActivity {
 	
 	private RelativeLayout bottom_view;
 
+	private ImageButton back_top; // 返回顶部按钮
+
 	/**
-	 * ������Ļ��ǰ���������һЩ���ֵ���
+	 * 可以判断屏幕遮挡
 	 */
 	private void screenControll(final View view) {
 		mGlobalLayoutListener = new OnGlobalLayoutListener() {
@@ -85,28 +88,41 @@ public class T1Activity extends BasicActivity {
 	}
 
 	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+			case R.id.back_top:// 返回listview顶部
+				myScrollView.smoothScrollTo(0,(int)(l1.getY()-h1.getHeight()));
+				break;
+		}
+	}
+
+
+	@Override
 	public void setParams(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_t1);
-		data = new ArrayList<String>();
+		data = new ArrayList<>();
 		for (int i = 0; i < 200; i++) {
 			data.add("aaaaaa"
 					+ Base64.encode(String.valueOf(i + 10).getBytes(),
 					Base64.DEFAULT));
 		}
-		// ��ʼ����Ļ��С
-		Utils.initScreenSize(this);
 
-		t0 = (TextView) findViewById(R.id.text0); // �������Ӷ���λ
-		t1 = (TextView) findViewById(R.id.text1); // ����Ԥ��ռλ
-		h1 = (TextView) findViewById(R.id.head1); // listviewͷ����
-		l1 = (ListView) findViewById(R.id.mylist); // �б�
-		main_content = (RelativeLayout) findViewById(R.id.main_layout); // ����������
-		myScrollView = (MyScrollerView) findViewById(R.id.myScrollView); // ����㻬������
-		top_view = (RelativeLayout) findViewById(R.id.top_view); // ��������
-		head2 = (RelativeLayout) findViewById(R.id.head2); // ��������
-		bottom_view = (RelativeLayout) findViewById(R.id.bottom_view); // �������ָ�����
 
-		// δ��ֹ��������������ʱ��listview����Ϊ���ֱ仯ͻȻ��Ӧ���֣���������oͷ���⸸����һ���߶�
+		t0 = (TextView) findViewById(R.id.text0); // 额外增加顶部位
+		t1 = (TextView) findViewById(R.id.text1); // 顶部预留占位
+		h1 = (TextView) findViewById(R.id.head1); // listview头布局
+		l1 = (ListView) findViewById(R.id.mylist); // 列表
+		main_content = (RelativeLayout) findViewById(R.id.main_layout); // 内容主布局
+		myScrollView = (MyScrollerView) findViewById(R.id.myScrollView); // 最外层滑动布局
+		top_view = (RelativeLayout) findViewById(R.id.top_view); // 顶部布局
+		head2 = (RelativeLayout) findViewById(R.id.head2); // 浮动布局
+		bottom_view = (RelativeLayout) findViewById(R.id.bottom_view); // 浮动布局父布局
+		back_top = (ImageButton) findViewById(R.id.back_top); // 返回顶部按钮
+
+		back_top.setOnClickListener(this);
+
+
+		// 未防止上拉或者下拉的时候listview会因为布局变化突然适应布局，所以这里給头标题父布局一个高度
 //		ViewGroup.LayoutParams params = h1.getLayoutParams();
 //		ViewGroup.LayoutParams params1 = bottom_view.getLayoutParams();
 //		params1.height = params.height;
@@ -119,7 +135,7 @@ public class T1Activity extends BasicActivity {
 				data, l1);
 		l1.setAdapter(adapter);
 		adapter.forceChangeListviewHeight();
-		myScrollView.smoothScrollTo(0, 0); // ��Ϊ�ı�listview�߶Ⱥ����ɿ�ʼ���治�ڶ�����������ʻ��ض���
+		myScrollView.smoothScrollTo(0, 0);// 因为改变listview高度后会造成开始画面不在顶部的情况，故划回顶部
 		isHiddenAll = false;
 		myScrollView.setOnScrollViewListener(new ScrollViewListener() {
 
@@ -127,19 +143,20 @@ public class T1Activity extends BasicActivity {
 			public void ScrollChanged(MyScrollerView view, int x, int y,
 									  int oldx, int oldy) {
 				if (oldy > (l1.getY()-h1.getHeight())&& oldy != 0 && y!= 0) {
-					//	System.out.println("���y:" + y + ",h1.getY():" + h1.getY()
-					//			+ ",oldy:" + oldy);
 					if(h1.getParent()!= head2) {
 						bottom_view.removeView(h1);
 						head2.addView(h1);
 					}
 				} else {
-					//	System.out.println("δ���y:" + y + ",h1.getY():" + h1.getY()
-					//			+ ",oldy:" + oldy);
 					if(h1.getParent()!= bottom_view) {
 						head2.removeView(h1);
 						bottom_view.addView(h1);
 					}
+				}
+				if(	oldy > Utils.SCREEN_HEIGHT) {
+					back_top.setVisibility(View.VISIBLE);
+				} else {
+					back_top.setVisibility(View.INVISIBLE);
 				}
 			}
 		});

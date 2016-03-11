@@ -22,6 +22,11 @@ public class HomeActivity extends BasicActivity {
     private ListView function_list;
 
     @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
     public void setParams(Bundle savedInstanceState) {
         setContentView(R.layout.activity_home);
         function_list = (ListView) findViewById(R.id.function_list);
