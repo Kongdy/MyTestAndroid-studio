@@ -167,11 +167,7 @@ public class BitmapHelp {
         getBitmapFromResource(resid, v, new onPicLoaderListener() {
             @Override
             public void onPicLoader(Bitmap bitmap, String picName) {
-                // 防错位加载
-                v.setTag(picName);
-                if (v.getTag() != null && picName.equals(v.getTag())) {
-                    ((ImageView) v).setImageBitmap(bitmap);
-                }
+                ((ImageView)v).setImageBitmap(bitmap);
             }
         });
     }
@@ -200,8 +196,8 @@ public class BitmapHelp {
         viewWidth = Utils.SCREENT_WIDTH_;
         viewHeight = Utils.SCREEN_HEIGHT / 10;
         // 计算samplesize
-        option.inSampleSize = option.outWidth/viewWidth  < option.outHeight / viewHeight ? option.outHeight / viewHeight
-                : option.outWidth/viewWidth;
+        option.inSampleSize = option.outWidth / viewWidth < option.outHeight / viewHeight ? option.outHeight / viewHeight
+                : option.outWidth / viewWidth;
         option.inJustDecodeBounds = false;
         Bitmap endBitmap = BitmapFactory.decodeResource(context.getResources(), resid, option);
 
@@ -222,7 +218,6 @@ public class BitmapHelp {
         String tag = picName.replaceAll("[^\\w]", "");
         String picPath = pPath + File.separator + tag;
         File picFile = new File(picPath);
-        Log.d("compress","picPath:" + picPath + ",sakdkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
         if (!picFile.exists()) {
             picFile.createNewFile();
         }
@@ -292,6 +287,17 @@ public class BitmapHelp {
      */
     public interface onPicGetListener {
         Bitmap getPicBitmap(Bitmap bitmap, String picName);
+    }
+
+    /**
+     * 清空缓存文件
+     */
+    public void clearCacheFile() {
+        String picPath = Utils.getPicSavePath(context);
+        File picFile = new File(picPath);
+        if(picFile.exists()) {
+            picFile.delete();
+        }
     }
 
 }

@@ -10,7 +10,7 @@
     <ImageView 
         android:id="@+id/i1"
         android:layout_below="@id/t1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="100dip"
         android:scaleType="fitXY"/>
 

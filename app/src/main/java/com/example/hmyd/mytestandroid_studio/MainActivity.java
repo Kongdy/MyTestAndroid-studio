@@ -93,7 +93,7 @@ public class MainActivity extends BasicActivity {
         back_top = (ImageButton) findViewById(R.id.back_top);
         back_top.setOnClickListener(this);
 
-		// ����drawable��������Դ
+		// 获取drawable资源文件下所有图片
 		try {
 			Field[] fields = R.drawable.class.getFields();
 			for (Field field : fields) {
@@ -127,18 +127,17 @@ public class MainActivity extends BasicActivity {
 		Log.d("main", "over constructor");
 		myR.setAdapter(adapter);
 
-
         // 滚动事件，滚动距离超过一个屏，显示返回顶部按钮
         myR.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                Log.d("myr","height:"+dy);
                 if(dy> Utils.SCREEN_HEIGHT) {
                     back_top.setVisibility(View.VISIBLE);
                 } else {
@@ -146,6 +145,7 @@ public class MainActivity extends BasicActivity {
                 }
             }
         });
+
        // myR.scrollTo(0,0);
         // 获取root权限
 		// boolean isGet = upgradeRootPermission(getPackageCodePath());

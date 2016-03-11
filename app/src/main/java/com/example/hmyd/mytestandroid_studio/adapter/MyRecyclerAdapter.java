@@ -46,6 +46,11 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
 		holder.positon = i;
 		holder.t1.setText(data.get(i).str);
 		// 三级缓存加载
+//		holder.i1.setImageResource(R.color.m_gray_1);
+//		holder.i1.setTag(data.get(i).resid+"");
+//		if(holder.i1.getTag()!= null && (data.get(i).resid+"").equals(holder.i1.getTag())) {
+//			BitmapHelp.getInstance(mContext).displayBitmapFromResource(data.get(i).resid,holder.i1);
+//		}
 		BitmapHelp.getInstance(mContext).displayBitmapFromResource(data.get(i).resid,holder.i1);
 	}
 
