@@ -9,27 +9,29 @@ import android.app.ActivityManager;
 import android.content.Context;
 
 /**
- * ȫ����
+ * 全局类
  * @author wangk
  */
 public class AppBasic {
 
 	private Stack<TActivityModel> activityStacks = new Stack<TActivityModel>(); // ?????
 	private static AppBasic appbasic;
+	private Context context;
 
 	/**
-	 * ���Ψһʵ��
+	 * activity栈实例
 	 * @return
 	 */
-	public static AppBasic getInstance() {
+	public static AppBasic getInstance(Context context) {
 		if (appbasic == null) {
-			appbasic = new AppBasic();
+			appbasic = new AppBasic(context);
 		}
 		return appbasic;
 	}
 
 	// ���̱߳�֤
-	private AppBasic() {
+	private AppBasic(Context context) {
+		this.context = context;
 	}
 
 	/**
@@ -89,8 +91,13 @@ public class AppBasic {
 	 */
 	public void finishCurrentActivity() {
 		if (!activityStacks.isEmpty()) {
-			finishActivity(activityStacks.lastElement().activity);
+			if(isLastActivity()) {
+				exitApplication();
+			} else {
+				finishActivity(activityStacks.lastElement().activity);
+			}
 		}
+
 	}
 
 	/**
@@ -106,11 +113,21 @@ public class AppBasic {
 	}
 
 	/**
+	 * 判断是activity栈是否只剩一个activity
+	 * @return
+     */
+	public boolean isLastActivity() {
+		if(activityStacks.size()<=1) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * �˳�����
 	 * 
-	 * @param context
 	 */
-	public void exitApplication(Context context) {
+	public void exitApplication() {
 		try {
 			finishAllActivity();
 			ActivityManager manager = (ActivityManager) context

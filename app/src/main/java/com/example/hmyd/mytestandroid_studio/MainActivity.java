@@ -88,7 +88,6 @@ public class MainActivity extends BasicActivity {
     @Override
 	public void setParams(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_main);
-		Log.d("main", "start...............");
 		myR = (RecyclerView) findViewById(R.id.my_r_view);
         back_top = (ImageButton) findViewById(R.id.back_top);
         back_top.setOnClickListener(this);
@@ -100,6 +99,7 @@ public class MainActivity extends BasicActivity {
                 if(field != null && field.getName().startsWith("__")) {
                     int s = field.getInt(new R.drawable());
                     resids.add(s);
+					Log.i("data","s:"+s);
                 }
 			}
 		} catch (IllegalAccessException e) {
@@ -123,7 +123,7 @@ public class MainActivity extends BasicActivity {
 			data.add(m);
 		}
 		MyRecyclerAdapter adapter = new MyRecyclerAdapter(
-				getApplicationContext(), data);
+				getApplicationContext(), data,myR);
 		Log.d("main", "over constructor");
 		myR.setAdapter(adapter);
 
@@ -137,7 +137,6 @@ public class MainActivity extends BasicActivity {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                Log.d("myr","height:"+dy);
                 if(dy> Utils.SCREEN_HEIGHT) {
                     back_top.setVisibility(View.VISIBLE);
                 } else {

@@ -15,5 +15,8 @@
     <string name="test1">测试1</string>
     <string name="recyclerViewTest">recycler测试</string>
     <string name="function">功能</string>
+    <string name="back">返回</string>
+
+    <string name="exit_try">再按一次退出</string>
 
 </resources>

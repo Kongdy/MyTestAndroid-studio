@@ -1,5 +1,6 @@
 package com.example.hmyd.mytestandroid_studio.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -29,9 +30,38 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
 	private Context mContext;
 	private List<TModel> data;
 
-	public MyRecyclerAdapter(Context mContext, List<TModel> data) {
+	private boolean isScrolled; // 是否正在滑动
+	private RecyclerView myR;
+
+	private List<Integer> visibleItem; // 当前屏幕显示item
+
+	public MyRecyclerAdapter(final Context mContext, final List<TModel> data, final RecyclerView myR) {
+		isScrolled = false;
 		this.mContext = mContext;
 		this.data = data;
+		this.myR = myR;
+		visibleItem = new ArrayList<>();
+		// 监听滑动事件
+		myR.addOnScrollListener(new RecyclerView.OnScrollListener() {
+			@Override
+			public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+				super.onScrollStateChanged(recyclerView, newState);
+				if(newState == 0) {
+					isScrolled = false;
+
+					for (int i =0;i< visibleItem.size();i++) {
+						MyViewHolder holder = (MyViewHolder)myR.findViewHolderForItemId(getItemId(visibleItem.get(i)+10
+								>visibleItem.size()?visibleItem.size():visibleItem.get(i)+10));
+						BitmapHelp.getInstance(mContext).displayBitmapFromResource(data.get(i).resid,holder.i1);
+						Log.v("scrolled","id:"+visibleItem.get(i));
+					}
+					visibleItem.clear();
+				} else {
+					isScrolled = true;
+				}
+
+			}
+		});
 	}
 
 	@Override
@@ -41,17 +71,18 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
 
 	@Override
 	public void onBindViewHolder(ViewHolder viewholder, int i) {
-		Log.d("madapter", "bind:"+i);
 		MyViewHolder holder = (MyViewHolder) viewholder;
 		holder.positon = i;
+		visibleItem.add(i);
 		holder.t1.setText(data.get(i).str);
+	//	holder.i1.setImageResource(data.get(i).resid);
 		// 三级缓存加载
-//		holder.i1.setImageResource(R.color.m_gray_1);
-//		holder.i1.setTag(data.get(i).resid+"");
-//		if(holder.i1.getTag()!= null && (data.get(i).resid+"").equals(holder.i1.getTag())) {
-//			BitmapHelp.getInstance(mContext).displayBitmapFromResource(data.get(i).resid,holder.i1);
-//		}
-		BitmapHelp.getInstance(mContext).displayBitmapFromResource(data.get(i).resid,holder.i1);
+		holder.i1.setImageResource(R.color.m_gray_1);
+		holder.i1.setTag(data.get(i).resid+"");
+		// 为了内存优化最大化，滑动的时候不加载图片
+		if(!isScrolled && holder.i1.getTag()!= null && (data.get(i).resid+"").equals(holder.i1.getTag())) {
+			BitmapHelp.getInstance(mContext).displayBitmapFromResource(data.get(i).resid,holder.i1);
+		}
 	}
 
 	@Override

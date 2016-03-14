@@ -56,7 +56,7 @@ public class BitmapHelp {
                     // 过程中产生线程复用而造成的图片重复，虽然说性能会提高，
                     // 不过你可以尝试用CachedThreadPool，用另外一种方法来
                     // 避免造成的内存重复加载
-                    // 线程池同时最多保持8个线程
+                    // 线程池同时最多保持4个线程
                     mThreadPool = Executors.newFixedThreadPool(4);
                 }
             }
@@ -105,18 +105,16 @@ public class BitmapHelp {
                     } else {
                         bitmap = BitmapFactory.decodeResource(context.getResources(), resid);
                     }
-
                     try {
                         compressMyBitmap(bitmap, 100, resid + "");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     addBitmapToMemoryCache(bitmap, resid + "");
-                    Message msg = new Message();
-                    msg.obj = bitmap;
-                    handler.sendMessage(msg);
                 }
-
+                Message msg = new Message();
+                msg.obj = bitmap;
+                handler.sendMessage(msg);
             }
         });
     }
@@ -187,12 +185,12 @@ public class BitmapHelp {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resid, option);
 
         // 如果view的控件大小全部是自适应的话，那么就给一个固定大小
-        if (viewHeight <= 1) {
-            viewHeight = Utils.SCREEN_HEIGHT / 10; // 默认十分之一的屏幕像素
-        }
-        if (viewWidth <= 1) {
-            viewWidth = Utils.SCREENT_WIDTH_;
-        }
+//        if (viewHeight <= 1) {
+//            viewHeight = Utils.SCREEN_HEIGHT / 10; // 默认十分之一的屏幕像素
+//        }
+//        if (viewWidth <= 1) {
+//            viewWidth = Utils.SCREENT_WIDTH_;
+//        }
         viewWidth = Utils.SCREENT_WIDTH_;
         viewHeight = Utils.SCREEN_HEIGHT / 10;
         // 计算samplesize
@@ -275,6 +273,8 @@ public class BitmapHelp {
     }
 
 
+
+
     /**
      * 提供给线程的位图回调接口
      */
@@ -282,12 +282,6 @@ public class BitmapHelp {
         void onPicLoader(Bitmap bitmap, String picName);
     }
 
-    /**
-     * 直接返回bitmap的接口
-     */
-    public interface onPicGetListener {
-        Bitmap getPicBitmap(Bitmap bitmap, String picName);
-    }
 
     /**
      * 清空缓存文件
