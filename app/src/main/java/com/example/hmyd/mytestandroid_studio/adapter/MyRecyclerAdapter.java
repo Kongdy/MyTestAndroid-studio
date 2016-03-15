@@ -7,6 +7,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.example.hmyd.mytestandroid_studio.R;
 import com.example.hmyd.mytestandroid_studio.model.TModel;
 import com.example.hmyd.mytestandroid_studio.tools.BitmapHelp;
+import com.example.hmyd.mytestandroid_studio.tools.Utils;
 
 
 /**
@@ -35,6 +37,8 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
 
 	private List<Integer> visibleItem; // 当前屏幕显示item
 
+
+
 	public MyRecyclerAdapter(final Context mContext, final List<TModel> data, final RecyclerView myR) {
 		isScrolled = false;
 		this.mContext = mContext;
@@ -50,10 +54,8 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
 					isScrolled = false;
 
 					for (int i =0;i< visibleItem.size();i++) {
-						MyViewHolder holder = (MyViewHolder)myR.findViewHolderForItemId(getItemId(visibleItem.get(i)+10
-								>visibleItem.size()?visibleItem.size():visibleItem.get(i)+10));
-						BitmapHelp.getInstance(mContext).displayBitmapFromResource(data.get(i).resid,holder.i1);
-						Log.v("scrolled","id:"+visibleItem.get(i));
+						ImageView view = (ImageView) myR.findViewWithTag(visibleItem.get(i)+"");
+						BitmapHelp.getInstance(mContext).displayBitmapFromResource(visibleItem.get(i),view);
 					}
 					visibleItem.clear();
 				} else {
@@ -73,12 +75,17 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
 	public void onBindViewHolder(ViewHolder viewholder, int i) {
 		MyViewHolder holder = (MyViewHolder) viewholder;
 		holder.positon = i;
-		visibleItem.add(i);
+		if(visibleItem.size()>(int)(Utils.SCREEN_HEIGHT/Utils.getRawSize(mContext, TypedValue.COMPLEX_UNIT_DIP,100))
+				&& visibleItem.size()>0) {
+			visibleItem.remove(0);
+		}
+
 		holder.t1.setText(data.get(i).str);
 	//	holder.i1.setImageResource(data.get(i).resid);
 		// 三级缓存加载
 		holder.i1.setImageResource(R.color.m_gray_1);
 		holder.i1.setTag(data.get(i).resid+"");
+		visibleItem.add(data.get(i).resid);
 		// 为了内存优化最大化，滑动的时候不加载图片
 		if(!isScrolled && holder.i1.getTag()!= null && (data.get(i).resid+"").equals(holder.i1.getTag())) {
 			BitmapHelp.getInstance(mContext).displayBitmapFromResource(data.get(i).resid,holder.i1);
@@ -114,7 +121,15 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
 		public void onClick(View v) {
 			Toast.makeText(mContext, "it's "+positon, Toast.LENGTH_SHORT).show();
 		}
-		
+
+		/**
+		 * 获取当前item控件的所占高度
+		 * @return
+         */
+		public int getViewHolderHeight() {
+
+			return 0;
+		}
 	}
 
 }

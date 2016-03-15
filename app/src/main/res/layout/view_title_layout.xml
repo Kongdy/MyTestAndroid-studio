@@ -34,6 +34,7 @@
         android:layout_marginRight="5dip"
         android:textStyle="bold"
         android:textSize="20sp"
+        android:ellipsize="end"
         android:textColor="@color/white"/>
 
     <android.support.v7.widget.AppCompatSpinner
@@ -41,6 +42,7 @@
         android:layout_width="50dip"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
+        android:ellipsize="end"
         android:layout_marginRight="5dip"
         android:visibility="gone">
     </android.support.v7.widget.AppCompatSpinner>

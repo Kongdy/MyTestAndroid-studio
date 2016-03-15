@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.util.LruCache;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -112,9 +113,13 @@ public class BitmapHelp {
                     }
                     addBitmapToMemoryCache(bitmap, resid + "");
                 }
-                Message msg = new Message();
-                msg.obj = bitmap;
-                handler.sendMessage(msg);
+                if(bitmap != null) {
+                    Message msg = new Message();
+                    msg.obj = bitmap;
+                    handler.sendMessage(msg);
+                } else {
+                    Log.e("bitmap help","create a null bitmap in getBitmapfromResource()");
+                }
             }
         });
     }
@@ -151,7 +156,9 @@ public class BitmapHelp {
 
     public void addBitmapToMemoryCache(Bitmap bitmap, String picName) {
         String tag = picName.replaceAll("[^\\w]", "");
-        memoryCahches.put(tag, bitmap);
+        if(bitmap != null) {
+            memoryCahches.put(tag, bitmap);
+        }
     }
 
     /**
@@ -165,7 +172,11 @@ public class BitmapHelp {
         getBitmapFromResource(resid, v, new onPicLoaderListener() {
             @Override
             public void onPicLoader(Bitmap bitmap, String picName) {
-                ((ImageView)v).setImageBitmap(bitmap);
+                if(v != null) {
+                    ((ImageView)v).setImageBitmap(bitmap);
+                } else {
+                    Log.e("bitmap help","setImageBitmap failed,view is null!");
+                }
             }
         });
     }
@@ -192,7 +203,7 @@ public class BitmapHelp {
 //            viewWidth = Utils.SCREENT_WIDTH_;
 //        }
         viewWidth = Utils.SCREENT_WIDTH_;
-        viewHeight = Utils.SCREEN_HEIGHT / 10;
+        viewHeight = (int)Utils.getRawSize(context, TypedValue.COMPLEX_UNIT_DIP,100);
         // 计算samplesize
         option.inSampleSize = option.outWidth / viewWidth < option.outHeight / viewHeight ? option.outHeight / viewHeight
                 : option.outWidth / viewWidth;
@@ -220,7 +231,12 @@ public class BitmapHelp {
             picFile.createNewFile();
         }
         FileOutputStream fos = new FileOutputStream(new File(picPath));
-        bitmap.compress(Bitmap.CompressFormat.PNG, quality, fos);
+        if(bitmap != null && fos != null) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, quality, fos);
+        } else {
+            Log.w("bitmapHelp","compress a null bitmap!");
+        }
+
     }
 
     /**

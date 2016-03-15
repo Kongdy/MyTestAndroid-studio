@@ -24,4 +24,11 @@
         <item name="android:windowTranslucentNavigation">true</item>-->
     </style>
 
+    <style name="customTabWithIconStyle" parent="@style/Widget.TabPageIndicator">
+    </style>
+
+    <style name="indicator_styles" parent="@android:style/Theme.Light">
+        <item name="tabWithIconStyle">@style/customTabWithIconStyle</item>
+    </style>
+
 </resources>

@@ -2,11 +2,13 @@ package com.example.hmyd.mytestandroid_studio.tools;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 
 import java.io.File;
@@ -34,6 +36,31 @@ public class Utils {
 		SCREENT_WIDTH_ = metrics.widthPixels;
 		SCREEN_HEIGHT = metrics.heightPixels;
 	}
+
+    /**
+     * 代码动态通过特定的dip值返回一个大小
+     * @param context
+     * @param unit
+     * @param value
+     * @return
+     */
+    public static float getRawSize(Context context,int unit,float value) {
+        Resources res = context.getResources();
+        return TypedValue.applyDimension(unit,value,res.getDisplayMetrics());
+    }
+
+
+    /**
+     * 代码动态通过特定的dip值返回一个大小，需要先进行设置value下的dimens
+     * @param context
+     * @param index
+     * @return
+     */
+    @Deprecated
+    public static int getIntFromDimens(Context context,int index) {
+        int result = context.getResources().getDimensionPixelSize(index);
+        return  result;
+    }
 
 
     /**

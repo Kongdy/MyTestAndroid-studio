@@ -5,7 +5,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.example.hmyd.mytestandroid_studio.adapter.MyRecyclerAdapter;
 import com.example.hmyd.mytestandroid_studio.model.TModel;
@@ -21,6 +19,8 @@ import com.example.hmyd.mytestandroid_studio.tools.Utils;
 
 /**
  * recyclerview测试和获取root权限
+ *
+ * recyclerView图片内存究极优化,绝对不会内存溢出系列
  */
 public class MainActivity extends BasicActivity {
 
@@ -29,6 +29,8 @@ public class MainActivity extends BasicActivity {
     private ImageButton back_top;
 
 	private List<TModel> data = new ArrayList<>();
+
+	private int slipDistance; // 当前滑动距离
 
 //	private int[] resids = { R.drawable.__00000, R.drawable.__00001,
 //			R.drawable.__00002, R.drawable.__00003, R.drawable.__00004,
@@ -80,7 +82,8 @@ public class MainActivity extends BasicActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back_top:
-                myR.scrollTo(0,0);
+				// 返回顶部
+				myR.smoothScrollToPosition(0);
                 break;
         }
     }
@@ -99,7 +102,6 @@ public class MainActivity extends BasicActivity {
                 if(field != null && field.getName().startsWith("__")) {
                     int s = field.getInt(new R.drawable());
                     resids.add(s);
-					Log.i("data","s:"+s);
                 }
 			}
 		} catch (IllegalAccessException e) {
@@ -130,18 +132,14 @@ public class MainActivity extends BasicActivity {
         // 滚动事件，滚动距离超过一个屏，显示返回顶部按钮
         myR.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if(dy> Utils.SCREEN_HEIGHT) {
-                    back_top.setVisibility(View.VISIBLE);
-                } else {
-                    back_top.setVisibility(View.INVISIBLE);
-                }
+				slipDistance += dy;
+				if(slipDistance > Utils.SCREEN_HEIGHT) {
+					back_top.setVisibility(View.VISIBLE);
+				} else {
+					back_top.setVisibility(View.INVISIBLE);
+				}
             }
         });
 

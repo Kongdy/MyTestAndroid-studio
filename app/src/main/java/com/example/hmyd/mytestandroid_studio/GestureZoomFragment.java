@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * ��ָ����ͼƬ����
+ * 手势放大缩小图片
  * @author wangk
  */
 public class GestureZoomFragment extends BasicFragment {
@@ -18,5 +18,10 @@ public class GestureZoomFragment extends BasicFragment {
 			Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.layout_gesture_zoom, container, false);
 		return rootView;
+	}
+
+	@Override
+	public void onClick(View v) {
+
 	}
 }

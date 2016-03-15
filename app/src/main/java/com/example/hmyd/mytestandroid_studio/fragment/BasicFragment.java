@@ -4,17 +4,22 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 /**
- * fragment����
+ * fragment基类
  * 
  * @author wangk
  *
  */
-public class BasicFragment extends Fragment {
+public abstract class BasicFragment extends Fragment implements View.OnClickListener {
 	
 	public View rootView;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
+
 	}
+
+	@Override
+	public abstract void onClick(View v);
 }
