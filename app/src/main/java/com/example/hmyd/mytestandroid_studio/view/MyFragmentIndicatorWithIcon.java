@@ -1,91 +1,116 @@
 package com.example.hmyd.mytestandroid_studio.view;
 
 import android.content.Context;
+
 import android.graphics.Bitmap;
-import android.support.v4.app.Fragment;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
+import android.widget.HorizontalScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 
 import com.example.hmyd.mytestandroid_studio.R;
+import com.example.hmyd.mytestandroid_studio.widgets.IndicatorBase;
+import com.example.hmyd.mytestandroid_studio.widgets.IndicatorBaseAdapter;
+import com.example.hmyd.mytestandroid_studio.widgets.IndicatorIconAdapter;
 
-import java.util.List;
 
 /**
  * @author kongdy
  *         on 2016/3/15
  * 跟随fragment，切换的底部菜单
  */
-public class MyFragmentIndicatorWithIcon extends LinearLayout implements View.OnClickListener {
-    private List<Fragment> fragments;
+public class MyFragmentIndicatorWithIcon extends HorizontalScrollView implements IndicatorBase {
 
-    private List<String> labels; // 标签文字
+    public static int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
 
-    private List<Bitmap> icons; // 标签图片
-
-    private FrameLayout parentLayout;// 用来填充fragment的layout
+    public static int WARP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT;
 
     private FragmentManager fm;
 
-    private int selectIndex; // 当前选择的position
+    private int selectIndex = 0; // 当前选择的position
 
     private Indicator indicator;
 
-    public MyFragmentIndicatorWithIcon(Context context,List<Fragment> fragments,List<String> labels,List<Bitmap> icons) {
-        super(context);
-        this.fragments = fragments;
-        this.labels = labels;
-        this.icons = icons;
+    private IndicatorBaseAdapter adapter;
+
+    private int mMaxTabWidth; // 每个tab的最大宽度
+
+
+
+    public MyFragmentIndicatorWithIcon(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        indicator = new Indicator(getContext(),R.attr.tabWithIconStyle);
+        addView(indicator,new ViewGroup.LayoutParams(WARP_CONTENT,MATCH_PARENT));
     }
 
-    public MyFragmentIndicatorWithIcon(Context context,List<Fragment> fragments,List<String> labels) {
-        super(context);
-        this.fragments = fragments;
-        this.labels = labels;
+
+    public FrameLayout getParentLayout() {
+        return adapter.getParentLayout();
     }
 
 
     /**
-     * 设置fragment填充布局，这个方法必须调用,设置完成会立即填充
-     * @param parentLayout
+     * 设置适配器
+     * @param adapter
      */
-    public void setParentLayout(FrameLayout parentLayout) {
-        this.parentLayout = parentLayout;
+    public void setAdapter(IndicatorBaseAdapter adapter) {
+        if(adapter == null) {
+            return;
+        }
+        this.adapter = adapter;
         notifyDataSetChanged();
     }
 
-    public FrameLayout getParentLayout() {
-        return parentLayout;
+    @Override
+    public void setAdapter(IndicatorBaseAdapter adapter, int initPosition) {
+
     }
 
+    public IndicatorBaseAdapter getAdapter() {
+        return adapter;
+    }
 
     /**
      * 开始填充
      */
-    private void notifyDataSetChanged() {
-        indicator = new Indicator(getContext(),R.attr.tabWithIconStyle);
+    public void notifyDataSetChanged() {
+        IndicatorIconAdapter iconadapter = null;
         fm = ((AppCompatActivity)getContext()).getSupportFragmentManager();
         if(fm == null) {
             fm = ((FragmentActivity)getContext()).getSupportFragmentManager();
         }
         FragmentTransaction ft = fm.beginTransaction();
-        for(int i = 0;i < fragments.size();i++) {
-            if(fragments.get(i) != null) {
-               if(fm.getFragments().contains(fragments.get(i))){
-                    ft.show(fragments.get(i));
+        indicator.removeAllViews();
+        iconadapter = (IndicatorIconAdapter)adapter;
+        for(int i = 0;i < adapter.getFragmentCount();i++) {
+            if(adapter.getFragment(i) != null) {
+               if(fm.getFragments() != null && fm.getFragments().contains(adapter.getFragment(i))){
+                    ft.show(adapter.getFragment(i));
                } else {
-                   ft.add(R.id.pic_content,fragments.get(i));
+                   ft.add(adapter.getParentLayout().getId(),adapter.getFragment(i));
                }
+                Bitmap bitmap = null;
+                if(iconadapter != null) {
+                    bitmap = iconadapter.getIcon(i);
+                }
+                addTab(i,adapter.getLabel(i),bitmap);
             } else {
                 Log.e("MyFragmentIndicator","there is a null fragment");
             }
         }
-        if(fragments.size() > 1 ){
+        ft.commitAllowingStateLoss();
+        if(adapter.getFragmentCount() >= 1 ){
             selectPosition(selectIndex);
         }
     }
@@ -96,18 +121,21 @@ public class MyFragmentIndicatorWithIcon extends LinearLayout implements View.On
      */
     public void selectPosition(int index) {
         if(fm == null) {
-            return;
+            throw new IllegalStateException("fragmentManager is null");
         }
         FragmentTransaction ft = fm.beginTransaction();
-        for(int i = 0;i < fragments.size();i++) {
-            if(fragments.get(i) != null) {
+        for(int i = 0;i < adapter.getFragmentCount();i++) {
+            if(adapter.getFragment(i) != null) {
                 if(i == index) {
-                    ft.show(fragments.get(i));
+                    ft.show(adapter.getFragment(i));
                 } else {
-                    ft.hide(fragments.get(i));
+                    ft.hide(adapter.getFragment(i));
                 }
             }
         }
+        selectIndex = index;
+        Toast.makeText(getContext(),"now is position:"+index,Toast.LENGTH_SHORT).show();
+        ft.commitAllowingStateLoss();
     }
 
     /**
@@ -118,9 +146,12 @@ public class MyFragmentIndicatorWithIcon extends LinearLayout implements View.On
             return;
         }
         FragmentTransaction ft = fm.beginTransaction();
-        for (Fragment fragment:fragments) {
-            ft.hide(fragment);
+        for(int i = 0;i < adapter.getFragmentCount();i++) {
+            if(adapter.getFragment(i) != null) {
+               ft.hide(adapter.getFragment(i));
+            }
         }
+        ft.commitAllowingStateLoss();
     }
 
     /**
@@ -130,10 +161,108 @@ public class MyFragmentIndicatorWithIcon extends LinearLayout implements View.On
         // TODO
     }
 
+    /**
+     * 添加底部菜单
+     * @param position
+     * @param text
+     * @param bitmap
+     */
+    public void addTab(int position,CharSequence text,Bitmap bitmap) {
+        TabView tabView = new TabView(getContext());
+        tabView.index = position;
+        tabView.setFocusable(true);
+        tabView.setText(text);
+        tabView.setOnClickListener(tabClickListener);
+        if(bitmap != null) {
+            Drawable drawable = new BitmapDrawable(getResources(),bitmap);
+            tabView.setCompoundDrawablesWithIntrinsicBounds(drawable,null,null,null);
+        }
+        Log.v("withTag","addTab position:"+position+"//////////////");
+        indicator.addView(tabView);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int withMode = MeasureSpec.getMode(widthMeasureSpec);
+        /**
+         * EXACTLY为精确尺寸，即给定尺寸或者Math_parent
+         * AT_MOST为最大尺寸，例如warp_content
+         * UNSPECIFIED为未指定尺寸
+         */
+        boolean fillViewPortFlag = withMode==MeasureSpec.EXACTLY; // 当布局中的宽度为Math_parent或者指定尺寸，则填充scrollview
+        setFillViewport(fillViewPortFlag);
+
+        int childCount = indicator.getChildCount();
+        if(childCount > 1 && withMode != MeasureSpec.UNSPECIFIED) {
+            // 判断，如果tab个数超过2个，则按宽度的最大尺寸给予，否则，平分宽度
+            if(childCount > 2) {
+                mMaxTabWidth = (int)(MeasureSpec.getSize(widthMeasureSpec)*0.4f);
+            } else {
+                mMaxTabWidth = MeasureSpec.getSize(widthMeasureSpec)/2;
+            }
+        } else if(childCount == 1) {
+            mMaxTabWidth = MeasureSpec.getSize(widthMeasureSpec);
+        } else {
+            mMaxTabWidth = -1;
+        }
+
+        int oldWidth = getMeasuredWidth();
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int newWidth = getMeasuredWidth();
+        if(fillViewPortFlag && newWidth != oldWidth) {
+            selectPosition(selectIndex);
+        }
+    }
 
 
     @Override
-    public void onClick(View v) {
-        // TODO
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
     }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    private class TabView extends TextView {
+
+        private int index;
+
+        public TabView(Context context) {
+            super(context,null,R.attr.tabWithIconStyle);
+        }
+
+        @Override
+        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+            // 当tab宽度超过计算出来的宽度的时候，则重新指定宽度
+            if(mMaxTabWidth > 0 && getMeasuredWidth() > mMaxTabWidth) {
+                super.onMeasure(MeasureSpec.makeMeasureSpec(mMaxTabWidth,MeasureSpec.EXACTLY)
+                ,heightMeasureSpec);
+            }
+        }
+
+        public int getIndex() {
+            return index;
+        }
+    }
+
+    private OnClickListener tabClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(v instanceof TabView) {
+                TabView tabview = (TabView)v;
+                int newSelectPosition = tabview.getIndex();
+                selectPosition(newSelectPosition);
+            }
+        }
+    };
+
 }

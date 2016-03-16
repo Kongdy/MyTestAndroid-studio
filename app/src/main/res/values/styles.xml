@@ -10,7 +10,7 @@
         <item name="android:titleTextStyle">@style/mToolBarTextStyle</item>
     </style>
 
-    <!-- Base application theme. 沉浸式actionBar-->
+    <!-- Base application theme. 沉浸式title-->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
        <!-- <item name="android:actionBarStyle">@style/MyActionBar</item> -->
@@ -19,16 +19,18 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="tabWithIconStyle">@style/customTabWithIconStyle</item>
         <!-- 开启透标题栏 ,注意API，这里最低支持API19，即android 4.4-->
         <!--<item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>-->
     </style>
 
     <style name="customTabWithIconStyle" parent="@style/Widget.TabPageIndicator">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/indicator_default_bg_selector</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:orientation">horizontal</item>
     </style>
 
-    <style name="indicator_styles" parent="@android:style/Theme.Light">
-        <item name="tabWithIconStyle">@style/customTabWithIconStyle</item>
-    </style>
 
 </resources>

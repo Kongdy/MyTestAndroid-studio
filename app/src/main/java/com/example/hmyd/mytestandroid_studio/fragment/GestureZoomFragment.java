@@ -1,5 +1,6 @@
-package com.example.hmyd.mytestandroid_studio;
+package com.example.hmyd.mytestandroid_studio.fragment;
 
+import com.example.hmyd.mytestandroid_studio.R;
 import com.example.hmyd.mytestandroid_studio.fragment.BasicFragment;
 
 import android.os.Bundle;
@@ -12,12 +13,16 @@ import android.view.ViewGroup;
  * @author wangk
  */
 public class GestureZoomFragment extends BasicFragment {
-	
+
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.layout_gesture_zoom, container, false);
-		return rootView;
+	public int getLayoutResId() {
+		return R.layout.layout_gesture_zoom;
+	}
+
+
+	@Override
+	protected void setParams() {
+
 	}
 
 	@Override
