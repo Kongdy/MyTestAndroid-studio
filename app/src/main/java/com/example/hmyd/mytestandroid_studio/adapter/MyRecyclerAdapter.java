@@ -52,7 +52,6 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
 				super.onScrollStateChanged(recyclerView, newState);
 				if(newState == 0) {
 					isScrolled = false;
-
 					for (int i =0;i< visibleItem.size();i++) {
 						ImageView view = (ImageView) myR.findViewWithTag(visibleItem.get(i)+"");
 						BitmapHelp.getInstance(mContext).displayBitmapFromResource(visibleItem.get(i),view);
@@ -60,6 +59,8 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
 					visibleItem.clear();
 				} else {
 					isScrolled = true;
+					// 滑动的时候终止所有图片加载线程
+					BitmapHelp.getInstance(mContext).shutDownThreadPool();
 				}
 
 			}

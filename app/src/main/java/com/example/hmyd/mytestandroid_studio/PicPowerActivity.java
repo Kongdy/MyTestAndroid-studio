@@ -54,8 +54,8 @@ public class PicPowerActivity extends BasicActivity {
 		fragments.add(blurPicFragment);
 
 		labels = new ArrayList<>();
-		labels.add("页1");
-		labels.add("页2");
+		labels.add("手势控制"); // 手势放大缩小、旋转等
+		labels.add("图片处理"); // 图片处理。高斯模糊等
 		labels.add("页3");
 
 		icons = new ArrayList<>();

@@ -22,6 +22,9 @@
             android:textSize="24sp"
             />
         <ListView
+            android:divider="@color/title_bg_color"
+            android:dividerHeight="1dip"
+            android:padding="10dip"
             android:layout_below="@id/home_title"
             android:id="@+id/function_list"
             android:layout_width="match_parent"

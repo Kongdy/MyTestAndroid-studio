@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hmyd.mytestandroid_studio.tools.BitmapHelp;
 import com.example.hmyd.mytestandroid_studio.tools.Utils;
 
 import java.util.Timer;

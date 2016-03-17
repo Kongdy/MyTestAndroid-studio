@@ -182,6 +182,8 @@ public class BitmapHelp {
     }
 
 
+
+
     /**
      * 自动调整位图跟给予的长宽进行size适配
      *
@@ -196,14 +198,13 @@ public class BitmapHelp {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resid, option);
 
         // 如果view的控件大小全部是自适应的话，那么就给一个固定大小
-//        if (viewHeight <= 1) {
-//            viewHeight = Utils.SCREEN_HEIGHT / 10; // 默认十分之一的屏幕像素
-//        }
-//        if (viewWidth <= 1) {
-//            viewWidth = Utils.SCREENT_WIDTH_;
-//        }
-        viewWidth = Utils.SCREENT_WIDTH_;
-        viewHeight = (int)Utils.getRawSize(context, TypedValue.COMPLEX_UNIT_DIP,100);
+        if (viewHeight <= 1) {
+            viewHeight = Utils.SCREEN_HEIGHT / 10; // 默认十分之一的屏幕像素
+        }
+        if (viewWidth <= 1) {
+            viewWidth = Utils.SCREENT_WIDTH_;
+        }
+   //     viewHeight = (int)Utils.getRawSize(context, TypedValue.COMPLEX_UNIT_DIP,100);
         // 计算samplesize
         option.inSampleSize = option.outWidth / viewWidth < option.outHeight / viewHeight ? option.outHeight / viewHeight
                 : option.outWidth / viewWidth;
@@ -287,8 +288,6 @@ public class BitmapHelp {
             mThreadPool = null;
         }
     }
-
-
 
 
     /**

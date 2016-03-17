@@ -4,8 +4,8 @@
     <string name="app_name">我的测试demo集</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_t1">动态浮动标题【T1Activity】</string>
-    <string name="title_activity_main">recyclerview的使用【MainActivty】</string>
-    <string name="title_activity_pic_power">图片处理【PicPowerActivity】</string>
+    <string name="title_activity_main">recyclerview的使用,和内存究极优化【MainActivty】</string>
+    <string name="title_activity_pic_power">图片处理集合【PicPowerActivity】</string>
     <string name="title_activity_home">首页【HomeActivity】</string>
     
     

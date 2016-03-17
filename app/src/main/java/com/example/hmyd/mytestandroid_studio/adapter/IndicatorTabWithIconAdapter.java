@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
 import android.widget.FrameLayout;
 
-import com.example.hmyd.mytestandroid_studio.view.Indicator;
 import com.example.hmyd.mytestandroid_studio.widgets.IndicatorBaseAdapter;
 import com.example.hmyd.mytestandroid_studio.widgets.IndicatorIconAdapter;
 

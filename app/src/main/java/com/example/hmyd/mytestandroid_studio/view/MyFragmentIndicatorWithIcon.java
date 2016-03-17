@@ -15,8 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.example.hmyd.mytestandroid_studio.R;
@@ -45,6 +45,8 @@ public class MyFragmentIndicatorWithIcon extends HorizontalScrollView implements
     private IndicatorBaseAdapter adapter;
 
     private int mMaxTabWidth; // 每个tab的最大宽度
+
+    private Runnable tabAnimalRunnable; // 在点击的时候,如果indicator的长度大于屏幕宽度，会滑到那个控件所在的位置
 
 
 
@@ -125,16 +127,21 @@ public class MyFragmentIndicatorWithIcon extends HorizontalScrollView implements
         }
         FragmentTransaction ft = fm.beginTransaction();
         for(int i = 0;i < adapter.getFragmentCount();i++) {
+            final TabView tabview = (TabView) indicator.getChildAt(i);
             if(adapter.getFragment(i) != null) {
+                boolean isSelect = i == index;
                 if(i == index) {
                     ft.show(adapter.getFragment(i));
                 } else {
                     ft.hide(adapter.getFragment(i));
                 }
+                tabview.setSelected(isSelect);
+                if(isSelect) {
+                    animalToTab(index);
+                }
             }
         }
         selectIndex = index;
-        Toast.makeText(getContext(),"now is position:"+index,Toast.LENGTH_SHORT).show();
         ft.commitAllowingStateLoss();
     }
 
@@ -177,8 +184,46 @@ public class MyFragmentIndicatorWithIcon extends HorizontalScrollView implements
             Drawable drawable = new BitmapDrawable(getResources(),bitmap);
             tabView.setCompoundDrawablesWithIntrinsicBounds(drawable,null,null,null);
         }
-        Log.v("withTag","addTab position:"+position+"//////////////");
-        indicator.addView(tabView);
+        indicator.addView(tabView,new LinearLayout.LayoutParams(0,MATCH_PARENT,1));
+    }
+
+
+    /**
+     * 以动画的形式过渡到下个tab
+     * @param position
+     */
+    private void animalToTab(int position) {
+        if(tabAnimalRunnable != null) {
+            removeCallbacks(tabAnimalRunnable);
+        }
+        final TabView tabiew = (TabView) indicator.getChildAt(position);
+        tabAnimalRunnable = new Runnable() {
+
+            @Override
+            public void run() {
+                final int scrolToPosition = tabiew.getLeft()-(getWidth()-tabiew.getWidth());
+                smoothScrollTo(scrolToPosition,0);
+                tabAnimalRunnable = null;
+            }
+        };
+        post(tabAnimalRunnable);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if(tabAnimalRunnable != null) {
+            post(tabAnimalRunnable);
+        }
+    }
+
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if(tabAnimalRunnable != null) {
+            removeCallbacks(tabAnimalRunnable);
+        }
     }
 
     @Override
@@ -241,7 +286,6 @@ public class MyFragmentIndicatorWithIcon extends HorizontalScrollView implements
         @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
             // 当tab宽度超过计算出来的宽度的时候，则重新指定宽度
             if(mMaxTabWidth > 0 && getMeasuredWidth() > mMaxTabWidth) {
                 super.onMeasure(MeasureSpec.makeMeasureSpec(mMaxTabWidth,MeasureSpec.EXACTLY)

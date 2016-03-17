@@ -3,10 +3,12 @@ package com.example.hmyd.mytestandroid_studio;
 import java.util.Stack;
 
 import com.example.hmyd.mytestandroid_studio.model.TActivityModel;
+import com.example.hmyd.mytestandroid_studio.tools.BitmapHelp;
 
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.graphics.Bitmap;
 
 /**
  * 全局类
@@ -124,12 +126,14 @@ public class AppBasic {
 	}
 
 	/**
-	 * �˳�����
+	 * 退出app
 	 * 
 	 */
 	public void exitApplication() {
 		try {
 			finishAllActivity();
+			// 清除所有缓存文件
+		//	BitmapHelp.getInstance(context).clearCacheFile();
 			ActivityManager manager = (ActivityManager) context
 					.getSystemService(Context.ACTIVITY_SERVICE);
 			manager.killBackgroundProcesses(context.getPackageName());

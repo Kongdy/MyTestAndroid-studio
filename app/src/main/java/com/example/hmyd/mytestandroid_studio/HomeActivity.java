@@ -16,7 +16,7 @@ import android.widget.ListView;
  */
 public class HomeActivity extends BasicActivity {
 
-    private String[] function_sets = {"recyclerView的使用【MainActivity】","动态浮动标题栏【T1Activity】",
+    private String[] function_sets = {"recyclerview的使用,和内存究极优化【MainActivty】","动态浮动标题栏【T1Activity】",
             "图片处理【PicPowerActivity】"};
 
     private ListView function_list;
