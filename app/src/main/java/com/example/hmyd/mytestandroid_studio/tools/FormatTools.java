@@ -104,4 +104,9 @@ public class FormatTools {
         return bitmap;
     }
 
+    public InputStream resId2InputStream(int resId,Context context) {
+        Bitmap bm = resId2bitmap(resId,context);
+        return this.bitmap2Inputstream(bm);
+    }
+
 }

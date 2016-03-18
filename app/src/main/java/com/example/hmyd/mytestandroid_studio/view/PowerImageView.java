@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.example.hmyd.mytestandroid_studio.R;
+import com.example.hmyd.mytestandroid_studio.tools.FormatTools;
 
 /**
  * @author kongdy
@@ -41,7 +42,7 @@ public class PowerImageView extends ImageView {
     protected void onDraw(Canvas canvas) {
         if(firstEnter && moive == null) {
            // moive = Movie.decodeStream(FormatTools.getInstance().drawable2InputStream(getDrawable()));
-            moive = Movie.decodeStream(getContext().getResources().openRawResource(R.mipmap.test_gif));
+            moive = Movie.decodeStream(FormatTools.getInstance().resId2InputStream(R.drawable.test_gif,getContext()));
         }
         if(moive != null) {
             if(!pause) {
@@ -110,4 +111,9 @@ public class PowerImageView extends ImageView {
         this.pause = pause;
     }
 
+
+    public void setMovieResource(int movieResId){
+        moive = Movie.decodeStream(FormatTools.getInstance().resId2InputStream(movieResId,getContext()));
+        requestLayout();
+    }
 }
