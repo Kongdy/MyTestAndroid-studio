@@ -18,7 +18,7 @@
     <com.example.hmyd.mytestandroid_studio.view.MyFragmentIndicatorWithIcon
         android:id="@+id/bottom_menu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:layout_alignParentBottom="true"
         android:background="@color/title_bg_color">
     </com.example.hmyd.mytestandroid_studio.view.MyFragmentIndicatorWithIcon>

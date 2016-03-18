@@ -3,6 +3,7 @@ package com.example.hmyd.mytestandroid_studio.tools;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.util.LruCache;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -182,37 +184,35 @@ public class BitmapHelp {
     }
 
 
-
-
     /**
      * 自动调整位图跟给予的长宽进行size适配
-     *
+     * 这里修改为了martix缩放，以前的samplesize缩放导致图片过于失真
      * @param viewWidth
      * @param viewHeight
      * @param resid
      * @return
      */
     public Bitmap adjustSizeBitmap(int viewWidth, int viewHeight, int resid) {
-        BitmapFactory.Options option = new BitmapFactory.Options();
-        option.inJustDecodeBounds = true;
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resid, option);
-
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resid);
+        int orgWidth = bitmap.getWidth();
+        int orgHeight = bitmap.getHeight();
         // 如果view的控件大小全部是自适应的话，那么就给一个固定大小
         if (viewHeight <= 1) {
-            viewHeight = Utils.SCREEN_HEIGHT / 10; // 默认十分之一的屏幕像素
+            viewHeight = (int)Utils.getRawSize(context, TypedValue.COMPLEX_UNIT_DIP,100); // 默认100dip
         }
         if (viewWidth <= 1) {
             viewWidth = Utils.SCREENT_WIDTH_;
         }
-   //     viewHeight = (int)Utils.getRawSize(context, TypedValue.COMPLEX_UNIT_DIP,100);
-        // 计算samplesize
-        option.inSampleSize = option.outWidth / viewWidth < option.outHeight / viewHeight ? option.outHeight / viewHeight
-                : option.outWidth / viewWidth;
-        option.inJustDecodeBounds = false;
-        Bitmap endBitmap = BitmapFactory.decodeResource(context.getResources(), resid, option);
-
-        return endBitmap;
+        // 计算缩放比例
+        float scaleWidth = ((float) viewWidth)/orgWidth;
+        float scaleHeight = ((float)viewHeight)/orgHeight;
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth,scaleHeight);
+        Bitmap changeBitmap = Bitmap.createBitmap(bitmap,0,0,orgWidth,orgHeight,matrix,true);
+        return changeBitmap;
     }
+
+
 
     /**
      * 压缩图片到缓存文件

@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 
 import com.example.hmyd.mytestandroid_studio.R;
+import com.example.hmyd.mytestandroid_studio.tools.BitmapHelp;
 import com.example.hmyd.mytestandroid_studio.widgets.IndicatorBase;
 import com.example.hmyd.mytestandroid_studio.widgets.IndicatorBaseAdapter;
 import com.example.hmyd.mytestandroid_studio.widgets.IndicatorIconAdapter;
@@ -103,7 +104,7 @@ public class MyFragmentIndicatorWithIcon extends HorizontalScrollView implements
                    ft.add(adapter.getParentLayout().getId(),adapter.getFragment(i));
                }
                 Bitmap bitmap = null;
-                if(iconadapter != null) {
+                if(iconadapter != null && i < iconadapter.getIconCount()) {
                     bitmap = iconadapter.getIcon(i);
                 }
                 addTab(i,adapter.getLabel(i),bitmap);

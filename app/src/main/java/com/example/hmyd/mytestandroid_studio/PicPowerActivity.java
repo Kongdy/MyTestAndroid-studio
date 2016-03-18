@@ -3,20 +3,22 @@ package com.example.hmyd.mytestandroid_studio;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.example.hmyd.mytestandroid_studio.adapter.IndicatorTabWithIconAdapter;
 import com.example.hmyd.mytestandroid_studio.fragment.BlurPicFragment;
 import com.example.hmyd.mytestandroid_studio.fragment.GestureZoomFragment;
+import com.example.hmyd.mytestandroid_studio.tools.BitmapHelp;
+import com.example.hmyd.mytestandroid_studio.tools.Utils;
 import com.example.hmyd.mytestandroid_studio.view.MyFragmentIndicatorWithIcon;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 图片增强
+ * 图片增强,所有图片控件均使用自定义powerImageview，增强控件
  * @author wangk
  *
  */
@@ -33,7 +35,6 @@ public class PicPowerActivity extends BasicActivity {
 
 	private MyFragmentIndicatorWithIcon tabWithindicator;
 	private FrameLayout content;
-
 
 	@Override
 	public void onClick(View v) {
@@ -59,6 +60,12 @@ public class PicPowerActivity extends BasicActivity {
 		labels.add("页3");
 
 		icons = new ArrayList<>();
+		icons.add(BitmapHelp.getInstance(this).adjustSizeBitmap((int)
+		Utils.getRawSize(this, TypedValue.COMPLEX_UNIT_DIP,35),(int)
+				Utils.getRawSize(this, TypedValue.COMPLEX_UNIT_DIP,35),R.mipmap.gesture_pic_menu_item));
+        icons.add(BitmapHelp.getInstance(this).adjustSizeBitmap((int)
+                Utils.getRawSize(this, TypedValue.COMPLEX_UNIT_DIP,35),(int)
+                Utils.getRawSize(this, TypedValue.COMPLEX_UNIT_DIP,35),R.mipmap.power_pic_menu_item));
 
 		adapter = new IndicatorTabWithIconAdapter(fragments,labels,icons,content);
 		tabWithindicator.setAdapter(adapter);

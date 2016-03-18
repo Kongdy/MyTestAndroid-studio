@@ -7,9 +7,9 @@
     <string name="title_activity_main">recyclerview的使用,和内存究极优化【MainActivty】</string>
     <string name="title_activity_pic_power">图片处理集合【PicPowerActivity】</string>
     <string name="title_activity_home">首页【HomeActivity】</string>
-    
-    
-    
+    <string name="title_activity_2048">游戏2048【Game2048Activity】</string>
+
+
     <string name="choose_please">请选择功能</string>
     <string name="test">测试0</string>
     <string name="test1">测试1</string>

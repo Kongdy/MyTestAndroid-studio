@@ -4,9 +4,14 @@
     android:layout_height="match_parent"
     android:background="@color/colorAccent">
 
-    <ImageView
+    <!--<ImageView-->
+        <!--android:id="@+id/controll_view"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"/>-->
+
+    <com.example.hmyd.mytestandroid_studio.view.PowerImageView
         android:id="@+id/controll_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

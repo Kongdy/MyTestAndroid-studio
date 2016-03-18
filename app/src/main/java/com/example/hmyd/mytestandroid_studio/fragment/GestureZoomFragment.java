@@ -3,6 +3,7 @@ package com.example.hmyd.mytestandroid_studio.fragment;
 import com.example.hmyd.mytestandroid_studio.R;
 import com.example.hmyd.mytestandroid_studio.fragment.BasicFragment;
 import com.example.hmyd.mytestandroid_studio.tools.BitmapHelp;
+import com.example.hmyd.mytestandroid_studio.view.PowerImageView;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,7 +17,7 @@ import android.widget.ImageView;
  */
 public class GestureZoomFragment extends BasicFragment {
 
-	private ImageView controll_view;
+	private PowerImageView controll_view;
 
 	@Override
 	public int getLayoutResId() {
@@ -26,9 +27,8 @@ public class GestureZoomFragment extends BasicFragment {
 
 	@Override
 	protected void setParams() {
-		controll_view = (ImageView) rootView.findViewById(R.id.controll_view);
-
-		BitmapHelp.getInstance(getActivity()).displayBitmapFromResource(R.mipmap.control_img,controll_view);
+		controll_view = (PowerImageView) rootView.findViewById(R.id.controll_view);
+		BitmapHelp.getInstance(getActivity()).displayBitmapFromResource(R.mipmap.test_gif,controll_view);
 	}
 
 	@Override
