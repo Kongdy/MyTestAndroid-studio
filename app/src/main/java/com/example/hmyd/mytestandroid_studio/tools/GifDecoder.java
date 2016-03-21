@@ -51,6 +51,13 @@ public class GifDecoder extends Thread {
     private int[] gct; // global color table
     private int[] act; // active color table
 
+    // (Lempel-Ziv-Welch encoding)兰博-立夫-卫曲编码法
+    // LZW decoder working arrays
+    private short[] prefix;
+    private byte[] suffix;
+    private byte[] pixelStack;
+    private byte[] pixels;
+
     public GifDecoder(InputStream is) {
         this.in = is;
     }
@@ -154,7 +161,9 @@ public class GifDecoder extends Thread {
          */
         int available,clear,code_mask,code_size,end_of_information,in_code,old_code,bits,code,count,i,datum,data_size,first,top,bi,pi;
         
-
+        if(pixels == null || pixels.length < npix) {
+            pixels = new byte[npix];
+        }
     }
 
 
