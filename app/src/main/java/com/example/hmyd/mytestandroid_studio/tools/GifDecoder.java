@@ -1,6 +1,9 @@
 package com.example.hmyd.mytestandroid_studio.tools;
 
+import android.graphics.Bitmap;
 import android.util.Log;
+
+import com.example.hmyd.mytestandroid_studio.widgets.GifFrame;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,20 +31,31 @@ public class GifDecoder extends Thread {
      * 解码成功
      */
     public static final int STATUS_FINISH = -1;
+    /**
+     * max decoder pixel stack size
+     */
+    private static final int MAX_STACK_SIZE = 4096;
 
     private int status; // current status
 
+    private int dispose;// last graphic control extension info
+    /**
+     * 0 = noaction ; 1 = leave in place;2 = restore to bg;3 = restore to prev
+     */
+    private int lastDispose = 0;
     private boolean transprency = false; // whether use transparent
     private int transIndex; // transparent color index
-
-    private int bgIndex; // background color index
-    private int bgColor; // background color
+    private int delay = 0;// delay in milliseconds (延迟)
 
     private InputStream in; // 获取的图片流
     private int width; // 图宽
     private int height; // 图高
 
+    private byte[] block = new byte[256]; // current data block
+    private int blockSize = 0; // block size
+
     private int ix,iy,iw,ih; // image rectangle ,指图片的矩阵
+    private int lrx,lry,lrw,lrh;
 
     private boolean lctFlag; // 局部颜色标志 local color table flag
     private boolean interfaceFlag; // 交错颜色标志 interface flag
@@ -57,6 +71,17 @@ public class GifDecoder extends Thread {
     private byte[] suffix;
     private byte[] pixelStack;
     private byte[] pixels;
+
+    private GifFrame gifFrame; // frame that current read
+    private int frameCount;
+
+    private Bitmap image; // 当前图层
+    private Bitmap lastImage; // 最后一个图层
+
+    private int bgIndex; // background color index
+    private int bgColor; // background color
+    private int lastBgColor; // previos background color
+    private int pixelAspect; // pixel aspect radio
 
     public GifDecoder(InputStream is) {
         this.in = is;
@@ -147,7 +172,115 @@ public class GifDecoder extends Thread {
             return;
         }
         decodeImageData();
+        skip();
+        if(err()) {
+            return;
+        }
+        frameCount++;
+        // create new image to recivie frame data
+        image = Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_4444);
+        // create image ,push frame data to bitmap type image
+        setPixels();
+    }
 
+    /**
+     * push frame data to image
+     */
+    private void setPixels() {
+        int[] dest = new int[width * height];
+        // fill in starting image content based on last image's dispose code
+        if (lastDispose > 0) {
+            if (lastDispose == 3) { // restore to prev
+                int n = frameCount - 2;
+                if (n > 0) {
+                    lastImage = getFrameImage(n - 1);
+                } else {
+                    lastImage = null;
+                }
+            }
+
+            if(lastImage != null) {
+                // copy to image
+                // 这里起到图片的资源的复制作用
+                lastImage.getPixels(dest,0,width,0,0,width,height);
+                if(lastDispose == 2) { // restore to bg
+                    // fill last image rect area with background color
+                    int c = 0;
+                    if (!transprency) {
+                        c = lastBgColor;
+                    }
+                    for (int i = 0;i < lrh;i++) {
+                        int n1 = (lry + i) * width + lrx;
+                        int n2 = n1 + lrw;
+                        for (int k = n1;k < n2;k++) {
+                            dest[k] = c;
+                        }
+                    }
+                }
+            }
+        }
+        // copy each source line to appropriate place in the destination
+        int pass = 1;
+        int inc = 8;
+        int iline = 0;
+        for (int i = 0;i < ih;i++) {
+            int line = i;
+            if(interfaceFlag) {
+                if (iline >= ih) {
+                    pass++;
+                    switch (pass) {
+                        case 2:
+                            iline = 4;
+                            break;
+                        case 3:
+                            iline = 2;
+                            inc = 4;
+                            break;
+                        case 4:
+                            iline = 1;
+                            inc = 2;
+                    }
+                }
+                line = iline;
+                iline += inc;
+            }
+            line += iy;
+            if(line < height){
+
+            }
+        }
+    }
+
+    /**
+     * get one frame image
+     * @param n
+     * @return
+     */
+    public Bitmap getFrameImage(int n) {
+        GifFrame frame = getFrame(n);
+        if(frame == null) {
+            return null;
+        } else {
+            return frame.image;
+        }
+    }
+
+    /**
+     * get one frame ,the frame include delay and data
+     * @param n
+     * @return
+     */
+    public GifFrame getFrame(int n) {
+        GifFrame frame = gifFrame;
+        int i = 0;
+        while(frame != null) {
+            if(i == n) {
+                return frame;
+            } else {
+                frame = frame.nextframe;
+            }
+        }
+        return null;
     }
 
     /**
@@ -162,8 +295,132 @@ public class GifDecoder extends Thread {
         int available,clear,code_mask,code_size,end_of_information,in_code,old_code,bits,code,count,i,datum,data_size,first,top,bi,pi;
         
         if(pixels == null || pixels.length < npix) {
-            pixels = new byte[npix];
+            pixels = new byte[npix]; // allocate new pixel array
         }
+        if(prefix == null) {
+            prefix = new short[MAX_STACK_SIZE];
+        }
+        if(suffix == null) {
+            suffix = new byte[MAX_STACK_SIZE];
+        }
+        if(pixelStack == null) {
+            pixelStack = new byte[MAX_STACK_SIZE];
+        }
+        // initialize GIF data stream decoder
+        data_size = read();
+        clear = 1 << data_size;
+        end_of_information = clear+1;
+        available = clear+2;
+        old_code = NullCode;
+        code_size = data_size+1;
+        code_mask = (1 << code_size) - 1;
+        for (code = 0;code < clear;code++) {
+            prefix[code] = 0;
+            suffix[code] = (byte)code;
+        }
+
+        // decode GIF pixel stream
+        datum=bits=count=first=top=pi=bi=0;
+        for (i = 0;i < npix;) {
+            if(top == 0) {
+                if(bits < code_size) {
+                    if(count == 0) {
+                        count = readBlock();
+                        if(count <= 0) {
+                            break;
+                        }
+                        bi = 0;
+                    }
+                    datum += (((int)block[bi]) & 0xff) << bits;
+                    bits += 8;
+                    bi++;
+                    count--;
+                    continue;
+                }
+                // Get the next code
+                code = datum & code_mask;
+                bits -= code_size;
+
+                // Interpret the code
+                if(code > available || code == end_of_information) {
+                    break;
+                }
+
+                if(code == clear) {
+                    // reset decoder
+                    code_size = data_size+1;
+                    code_mask = (1 << code_size) - 1;
+                    available = clear + 2;
+                    old_code = NullCode;
+                    continue;
+                }
+
+                if(old_code == NullCode) {
+                    pixelStack[top++] = suffix[code];
+                    old_code = code;
+                    first = code;
+                    continue;
+                }
+                in_code = code;
+                if(code == available) {
+                    pixelStack[top++] = (byte)first;
+                    code = old_code;
+                }
+                while (code > clear) {
+                    pixelStack[top++] = suffix[code];
+                    code = prefix[code];
+                }
+                first = ((int)suffix[code]) & 0xff;
+                // add a new string to the string table
+                if(available > MAX_STACK_SIZE) {
+                    break;
+                }
+                pixelStack[top++] = (byte)first;
+                prefix[available] = (short) old_code;
+                suffix[available] = (byte) first;
+                available++;
+                if((available & code_mask) == 0
+                        && (available < MAX_STACK_SIZE) ) {
+                    code_size++;
+                    code_mask += available;
+                }
+                old_code =  in_code;
+            }
+            // pop a pixel off the pixel stack
+            top -- ;
+            pixels[pi++] = pixelStack[top];
+            i++;
+        }
+        for (i = pi;i < npix;i++) {
+            pixels[i] = 0;
+        }
+    }
+
+    /**
+     * 读取数据块
+     * @return
+     */
+    private int readBlock() {
+        blockSize = read();
+        int n = 0;
+        if(blockSize > 0) {
+            try {
+                int count = 0;
+                while (n < blockSize) {
+                    count = in.read(block,n,blockSize-n);
+                    if(count == -1) {
+                        break;
+                    }
+                    n += count;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if(n < blockSize) {
+                status = STATUS_FROMAT_ERRPOR;
+            }
+        }
+        return n;
     }
 
 
@@ -253,5 +510,13 @@ public class GifDecoder extends Thread {
         return status != STATUS_PARSING;
     }
 
+    /**
+     * skips variable length blocks up to and including next zero block
+     */
+    private void skip() {
+        do{
+            readBlock();
+        }while ((blockSize > 0) && ! err());
+    }
 
 }
