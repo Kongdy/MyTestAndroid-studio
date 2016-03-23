@@ -22,9 +22,7 @@ public class GestureZoomFragment extends BasicFragment {
 	@Override
 	protected void setParams() {
 		controll_view = (PowerImageView) rootView.findViewById(R.id.controll_view);
-		controll_view.setImageResource(R.drawable.test_gif);
-	//	controll_view.setMovieResource(R.drawable.test_gif);
-	//	BitmapHelp.getInstance(getActivity()).displayBitmapFromResource(R.drawable.test_gif,controll_view);
+		controll_view.setImageResource(R.drawable.test_super_big);
 	}
 
 	@Override
