@@ -204,7 +204,7 @@ public class BitmapHelp {
             viewWidth = Utils.SCREENT_WIDTH_;
         }
         // 计算缩放比例
-        float scaleWidth = ((float) viewWidth)/orgWidth;
+        float scaleWidth = ((float)viewWidth)/orgWidth;
         float scaleHeight = ((float)viewHeight)/orgHeight;
         Matrix matrix = new Matrix();
         matrix.postScale(scaleWidth,scaleHeight);

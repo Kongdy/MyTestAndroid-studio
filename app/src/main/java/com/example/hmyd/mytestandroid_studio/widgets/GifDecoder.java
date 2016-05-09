@@ -7,6 +7,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+
 /**
  * @author kongdy
  *         on 2016/3/21
@@ -158,7 +159,7 @@ public class GifDecoder extends Thread {
      * 读取图片文件主体部分
      */
     private void readContents() {
-        Log.v("decoder","read contents..........");
+      //  Log.v("decoder","read contents..........");
         boolean done = false;
         while (!(done || err())) {
             int code = read();
@@ -225,7 +226,7 @@ public class GifDecoder extends Thread {
     }
 
     private void readGraphicControlExt() {
-        Log.v("decoder","read readGraphicControlExt..........");
+   //     Log.v("decoder","read readGraphicControlExt..........");
         read(); // block size
         int packed = read(); // packed filed
         dispose = (packed & 0x1c) >> 2; // disposal method
@@ -242,7 +243,7 @@ public class GifDecoder extends Thread {
      * 读取图片
      */
     private void readImage() {
-        Log.v("decoder","read image..........");
+    //    Log.v("decoder","read image..........");
         // 读取到的每一帧，开始都是已一个代表图片大小的矩阵参数开始的，顺序如下
         ix = readShort();
         iy = readShort();
@@ -454,7 +455,7 @@ public class GifDecoder extends Thread {
      */
     private void decodeImageData() {
 
-        Log.v("decoder","decodeImageData..........");
+    //    Log.v("decoder","decodeImageData..........");
 
         int NullCode = -1;
         int npix = iw * ih;
@@ -571,7 +572,7 @@ public class GifDecoder extends Thread {
      * @return
      */
     private int readBlock() {
-        Log.v("decoder","read readBlock..........");
+   //     Log.v("decoder","read readBlock..........");
         blockSize = read();
         int n = 0;
         if(blockSize > 0) {
@@ -599,7 +600,7 @@ public class GifDecoder extends Thread {
      * 读取头文件
      */
     private void readHeader() {
-        Log.v("decoder","read readHeader..........");
+        //Log.v("decoder","read readHeader..........");
         String headType = "";
         for (int i = 0;i < 6;i++) {
             headType += (char)read();
@@ -618,7 +619,7 @@ public class GifDecoder extends Thread {
     }
 
     private void readLSD() {
-        Log.v("decoder","read readLSD..........");
+  //      Log.v("decoder","read readLSD..........");
         width = readShort();
         height = readShort();
         // pack filed

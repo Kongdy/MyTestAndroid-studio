@@ -29,4 +29,5 @@ public class GestureZoomFragment extends BasicFragment {
 	public void onClick(View v) {
 
 	}
+
 }

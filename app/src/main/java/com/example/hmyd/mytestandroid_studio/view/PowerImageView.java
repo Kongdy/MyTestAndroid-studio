@@ -4,14 +4,17 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
+import com.example.hmyd.mytestandroid_studio.tools.Utils;
 import com.example.hmyd.mytestandroid_studio.widgets.GifDecoder;
 import com.example.hmyd.mytestandroid_studio.widgets.GifAction;
 import com.example.hmyd.mytestandroid_studio.widgets.GifFrame;
@@ -41,10 +44,17 @@ public class PowerImageView extends View implements GifAction{
     private int showWidth = -1;
     private int showHeight = -1;
     private Rect rect = null;
+    private Point drawPosition;
+
+    private Point absoluteDownPosition;
+    private Point startPosition;
 
     private DrawThread drawThread = null;
 
     private GifImageType anmiationType = GifImageType.SYNC_DECODER;
+
+    private float pointDistance;
+    private boolean beginZoom;
 
     public PowerImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -77,15 +87,15 @@ public class PowerImageView extends View implements GifAction{
         if (currentImage == null) {
             return;
         }
-        int saveConunt = canvas.getSaveCount();
+        int saveCount = canvas.getSaveCount();
         canvas.save();
         canvas.translate(getPaddingLeft(),getPaddingTop());
         if(showWidth == -1) {
-            canvas.drawBitmap(currentImage,0,0,null);
-        }else {
+            canvas.drawBitmap(currentImage,drawPosition.x,drawPosition.y,null);
+        } else {
             canvas.drawBitmap(currentImage,null,rect,null);
         }
-        canvas.restoreToCount(saveConunt);
+        canvas.restoreToCount(saveCount);
     }
 
     @Override
@@ -119,7 +129,7 @@ public class PowerImageView extends View implements GifAction{
 
         setMeasuredDimension(widthSize,heightSize);
 
-        //super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+       // super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     /**
@@ -163,9 +173,88 @@ public class PowerImageView extends View implements GifAction{
             rect.top = 0;
             rect.right = width;
             rect.bottom = height;
+            drawPosition = new Point();
+            drawPosition.x = width/2;
+            drawPosition.y = height/2;
         }
     }
 
+    /**
+     * 实现手势缩放、移动
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (absoluteDownPosition == null) {
+            absoluteDownPosition = new Point();
+        }
+        if(startPosition == null) {
+            startPosition = new Point();
+        }
+        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN:
+                absoluteDownPosition.x = (int) event.getRawX();
+                absoluteDownPosition.y = (int) event.getRawY();
+                startPosition.x = (int) event.getX();
+                startPosition.y = absoluteDownPosition.y - this.getTop();
+                if(event.getPointerCount() > 1) {
+                    pointDistance = getPointersDistance(event);
+                    beginZoom = true;
+                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+                float nowPointDistance = getPointersDistance(event);
+                float changeScale = pointDistance/nowPointDistance;
+                final int width = this.getWidth();
+                final int height = this.getHeight();
+                int newWidth = width;
+                int newHeight = height;
+                if(beginZoom) {
+                    newWidth = (int) (newWidth*changeScale);
+                    newHeight = (int) (newHeight*changeScale);
+                }
+                this.setPosition(absoluteDownPosition.x-startPosition.x,absoluteDownPosition.y-startPosition.y,
+                        absoluteDownPosition.x+newWidth-startPosition.x,absoluteDownPosition.y+newHeight-
+                startPosition.y);
+                absoluteDownPosition.x = (int) event.getRawX();
+                absoluteDownPosition.y = (int) event.getRawY();
+                break;
+            case MotionEvent.ACTION_UP:
+                break;
+        }
+        return true;
+    }
+
+    /**
+     * 获取触摸点之间的距离
+     * @param event
+     * @return
+     */
+    private float getPointersDistance(MotionEvent event) {
+        float distance = 0;
+        int pointCount = event.getPointerCount();
+        if(pointCount > 1) {
+            // calculate distance
+            float xs[] = new float[pointCount];
+            float ys[] = new float[pointCount];
+            for (int i = 0;i < pointCount;i++ ) {
+                xs[i] = event.getX(i);
+                ys[i] = event.getY(i);
+            }
+            Utils.mergeSort(xs,pointCount);
+            Utils.mergeSort(ys,pointCount);
+            for (int j = 0;j < pointCount/2;j++) {
+                distance += xs[pointCount-1-j]-xs[j]+ys[pointCount-1-j]-ys[j];
+            }
+        }
+        // To prevent miss a finger suddenly
+        return distance/pointCount;
+    }
+
+    private void setPosition(int l,int t,int r,int b) {
+        this.layout(l,t,r,b);
+    }
 
     @Override
     public void parseOk(boolean parseStatus, int frameIndex) {
@@ -273,4 +362,6 @@ public class PowerImageView extends View implements GifAction{
         }
         final int nativeInt;
     }
+
+
 }

@@ -101,7 +101,49 @@ public class Utils {
         return context.getExternalCacheDir();
     }
 
-	/**
+    /**
+     * merge sort
+     * @param a sort array
+     * @param n array size
+     */
+    public static void mergeSort(float a[],int n) {
+        float temp[] = new float[n];
+        mergeSort(a,0,n-1,temp);
+    }
+
+    private static void mergeSort(float a[],int first,int last,float temp[]) {
+        if(first < last) {
+            int mid = (first+last)/2;
+            mergeSort(a,first,mid,temp);
+            mergeSort(a,mid+1,last,temp);
+            mergeSortArray(a,first,mid,last,temp);
+        }
+    }
+
+    private static void mergeSortArray(float a[],int first,int mid,int last,float temp[]) {
+        int i = first,j = mid+1,k = 0,m = mid,n = last;
+
+        while(i <= m && j <= n) {
+            if(a[i] <= a[j]) {
+                temp[k++] = a[i++];
+            } else {
+                temp[k++] = a[j++];
+            }
+        }
+
+        while(i <= m) {
+            temp[k++] = a[i++];
+        }
+        while(j <= n) {
+            temp[k++] = a[j++];
+        }
+
+        for (int l = 0;l < k;l++) {
+            a[l+first] = temp[l];
+        }
+    }
+
+    /**
 	 * 高斯/毛玻璃模糊，使用java的方法，但是当模糊半径比较大的情况的下
      * 可能会性能不足
 	 * @param sentBitmap 图片

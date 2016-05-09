@@ -184,6 +184,8 @@ public class MyFragmentIndicatorWithIcon extends HorizontalScrollView implements
         if(bitmap != null) {
             Drawable drawable = new BitmapDrawable(getResources(),bitmap);
             tabView.setCompoundDrawablesWithIntrinsicBounds(drawable,null,null,null);
+            bitmap = null;
+            System.gc();
         }
         indicator.addView(tabView,new LinearLayout.LayoutParams(0,MATCH_PARENT,1));
     }
