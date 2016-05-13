@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.hmyd.mytestandroid_studio.tools.Utils;
 import com.example.hmyd.mytestandroid_studio.widgets.GifDecoder;
@@ -43,7 +44,11 @@ public class PowerImageView extends View implements GifAction{
 
     private int showWidth = -1;
     private int showHeight = -1;
+    private int cursorWidth = -1;
+    private int cursorHeight = -1;
+
     private Rect rect = null;
+    private Rect bitmapRect = null;
     private Point drawPosition;
 
     private Point absoluteDownPosition;
@@ -54,7 +59,12 @@ public class PowerImageView extends View implements GifAction{
     private GifImageType anmiationType = GifImageType.SYNC_DECODER;
 
     private float pointDistance;
-    private boolean beginZoom;
+    private int touchMode = -1;
+
+    private static final int BEGINMOVE = 1;
+    private static final int BEGINZOOM = 2;
+    private static final int IDLE_TOUCH_MODE = -1;
+
 
     public PowerImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -166,8 +176,15 @@ public class PowerImageView extends View implements GifAction{
 
     public void setShowDimension(int width,int height) {
         if(width > 0 && height > 0) {
-            showWidth = width;
-            showHeight = height;
+            if(showWidth == -1) {
+                showWidth = width;
+                cursorWidth = showWidth;
+            }
+            if(showHeight == -1) {
+                showHeight = height;
+                cursorHeight = showHeight;
+            }
+
             rect = new Rect();
             rect.left = 0;
             rect.top = 0;
@@ -180,7 +197,7 @@ public class PowerImageView extends View implements GifAction{
     }
 
     /**
-     * 实现手势缩放、移动
+     * 实现手势缩放、移动、旋转
      * @param event
      * @return
      */
@@ -198,29 +215,44 @@ public class PowerImageView extends View implements GifAction{
                 absoluteDownPosition.y = (int) event.getRawY();
                 startPosition.x = (int) event.getX();
                 startPosition.y = absoluteDownPosition.y - this.getTop();
-                if(event.getPointerCount() > 1) {
-                    pointDistance = getPointersDistance(event);
-                    beginZoom = true;
-                }
+                touchMode = BEGINMOVE;
                 break;
             case MotionEvent.ACTION_MOVE:
-                float nowPointDistance = getPointersDistance(event);
-                float changeScale = pointDistance/nowPointDistance;
                 final int width = this.getWidth();
                 final int height = this.getHeight();
-                int newWidth = width;
-                int newHeight = height;
-                if(beginZoom) {
-                    newWidth = (int) (newWidth*changeScale);
-                    newHeight = (int) (newHeight*changeScale);
+                int newWidth;
+                int newHeight;
+                if(touchMode == BEGINZOOM) {
+                    float nowPointDistance = getPointersDistance(event);
+                    float changeScale = nowPointDistance/pointDistance;
+                    Log.e("n,p,w,h",nowPointDistance+","+pointDistance+","+width+","+height);
+                    newWidth = (int) ((showWidth*changeScale)-showWidth);
+                    newHeight = (int) ((showHeight*changeScale)-showHeight);
+                    if((newWidth > 0 && width < 8*showWidth) || (newWidth < 0 && width > showWidth/2)) {
+                        this.setPosition(absoluteDownPosition.x-startPosition.x-newWidth/4,absoluteDownPosition.y-startPosition.y-newHeight/4,
+                                absoluteDownPosition.x+cursorWidth+newWidth/4-startPosition.x,absoluteDownPosition.y+cursorHeight+newHeight/4-
+                                        startPosition.y);
+                    }
+                } else if(touchMode == BEGINMOVE){
+                    this.setPosition(absoluteDownPosition.x-startPosition.x,absoluteDownPosition.y-startPosition.y,
+                            absoluteDownPosition.x+width-startPosition.x,absoluteDownPosition.y+height-
+                                    startPosition.y);
+                    absoluteDownPosition.x = (int) event.getRawX();
+                    absoluteDownPosition.y = (int) event.getRawY();
                 }
-                this.setPosition(absoluteDownPosition.x-startPosition.x,absoluteDownPosition.y-startPosition.y,
-                        absoluteDownPosition.x+newWidth-startPosition.x,absoluteDownPosition.y+newHeight-
-                startPosition.y);
-                absoluteDownPosition.x = (int) event.getRawX();
-                absoluteDownPosition.y = (int) event.getRawY();
                 break;
             case MotionEvent.ACTION_UP:
+                touchMode = IDLE_TOUCH_MODE;
+                pointDistance = 0;
+                break;
+            case MotionEvent.ACTION_POINTER_UP:
+                touchMode = IDLE_TOUCH_MODE;
+                cursorWidth = getWidth();
+                cursorHeight = getHeight();
+                break;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                touchMode = BEGINZOOM;
+                pointDistance = getPointersDistance(event);
                 break;
         }
         return true;

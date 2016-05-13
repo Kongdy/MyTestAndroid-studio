@@ -9,4 +9,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.hmyd.mytestandroid_studio.Game2048Activity">
 
+    <com.example.hmyd.mytestandroid_studio.view.MyPathPracticeView
+        android:id="@+id/myPathP"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        ></com.example.hmyd.mytestandroid_studio.view.MyPathPracticeView>
+
 </RelativeLayout>
