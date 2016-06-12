@@ -100,9 +100,9 @@ public class PowerImageView extends View implements GifAction{
         int saveCount = canvas.getSaveCount();
         canvas.save();
         canvas.translate(getPaddingLeft(),getPaddingTop());
-        if(showWidth == -1) {
+        if(showWidth == -1 && drawPosition != null) {
             canvas.drawBitmap(currentImage,drawPosition.x,drawPosition.y,null);
-        } else {
+        } else if(rect != null){
             canvas.drawBitmap(currentImage,null,rect,null);
         }
         canvas.restoreToCount(saveCount);
@@ -225,13 +225,21 @@ public class PowerImageView extends View implements GifAction{
                 if(touchMode == BEGINZOOM) {
                     float nowPointDistance = getPointersDistance(event);
                     float changeScale = nowPointDistance/pointDistance;
-                    Log.e("n,p,w,h",nowPointDistance+","+pointDistance+","+width+","+height);
+
                     newWidth = (int) ((showWidth*changeScale)-showWidth);
                     newHeight = (int) ((showHeight*changeScale)-showHeight);
-                    if((newWidth > 0 && width < 8*showWidth) || (newWidth < 0 && width > showWidth/2)) {
-                        this.setPosition(absoluteDownPosition.x-startPosition.x-newWidth/4,absoluteDownPosition.y-startPosition.y-newHeight/4,
-                                absoluteDownPosition.x+cursorWidth+newWidth/4-startPosition.x,absoluteDownPosition.y+cursorHeight+newHeight/4-
+//                    Log.e("n,p,w,h",nowPointDistance+","+pointDistance+","+width+
+//                            ","+height+",showWidth:"+showWidth+",showWidth:"+showWidth+",newWidth:"+
+//                            newWidth+",newHeight:"+newHeight+",cursorWidth:"+cursorWidth);
+                    if((newWidth > 0 && width < 8*showWidth) || (newWidth < 0 && width > (showWidth*2)/3)) {
+                        this.setPosition(absoluteDownPosition.x-startPosition.x-newWidth/2,
+                                absoluteDownPosition.y-startPosition.y-newHeight/2,
+                                absoluteDownPosition.x+cursorWidth+newWidth/2-startPosition.x,absoluteDownPosition.y+
+                                        cursorHeight+newHeight/2-
                                         startPosition.y);
+                          setShowDimension(getWidth(),getHeight());
+//                        cursorWidth = getWidth();
+//                        cursorHeight = getHeight();
                     }
                 } else if(touchMode == BEGINMOVE){
                     this.setPosition(absoluteDownPosition.x-startPosition.x,absoluteDownPosition.y-startPosition.y,
