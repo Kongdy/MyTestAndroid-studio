@@ -18,11 +18,19 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hmyd.mytestandroid_studio.httpmanager.ApiService;
+import com.example.hmyd.mytestandroid_studio.httpmanager.HttpApiBase;
+import com.example.hmyd.mytestandroid_studio.model.BaseModel;
+import com.example.hmyd.mytestandroid_studio.model.TModel;
 import com.example.hmyd.mytestandroid_studio.tools.BitmapHelp;
 import com.example.hmyd.mytestandroid_studio.tools.Utils;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * activity基类
@@ -94,6 +102,33 @@ public abstract class BasicActivity extends AppCompatActivity
 
 		}
 	}
+
+    protected Callback<BaseModel> baseModelCallback = new Callback<BaseModel>() {
+        @Override
+        public void onResponse(Call<BaseModel> call, Response<BaseModel> response) {
+        }
+
+        @Override
+        public void onFailure(Call<BaseModel> call, Throwable t) {
+
+        }
+    };
+
+    protected void onRequest() {
+        HttpApiBase.getMyRetrofit().test().enqueue(new Callback<TModel>() {
+            @Override
+            public void onResponse(Call<TModel> call, Response<TModel> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<TModel> call, Throwable t) {
+
+            }
+        });
+        HttpApiBase.getMyRetrofit().test2()
+        ;
+    }
 
 
 	/**
