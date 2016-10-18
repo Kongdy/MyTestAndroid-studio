@@ -401,4 +401,11 @@ public class Utils {
 		RenderScript rs = RenderScript.create(context);
 		Allocation overlayAlloc = Allocation.createFromBitmap(rs, sentBitmap);
 	}
+
+
+    /**
+     * native方法，调用jni
+     */
+    public static native void NumMulti();
+
 }

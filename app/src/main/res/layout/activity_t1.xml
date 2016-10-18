@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/text0"
                     android:text="测试测试测试测试测试测试测试测试测试测试"
-                    android:textColor="@android:color/holo_orange_dark"
+                    android:textColor="@color/holo_orange_dark"
                     android:textSize="56sp" />
             </RelativeLayout>
 
@@ -47,15 +47,17 @@
                 android:id="@+id/bottom_view"
                 android:layout_width="match_parent"
                 android:layout_height="50dip"
-                android:layout_below="@id/top_view" >
+                android:layout_below="@id/top_view"
+                android:elevation="30dp"
+                android:translationZ="30dp">
 
                 <TextView
                     android:id="@+id/head1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@android:color/holo_purple"
+                    android:background="@color/holo_purple"
                     android:gravity="center"
-                    android:text="这个是下面那个listview的头标题" 
+                    android:text="这个是下面那个listview的头标题"
                     android:textSize="24sp"/>
             </RelativeLayout>
             
@@ -72,6 +74,8 @@
         android:id="@+id/head2"
         android:layout_width="match_parent"
         android:layout_height="50dip"
+        android:elevation="30dp"
+        android:translationZ="30dp"
         android:layout_below="@id/my_tool_bar">
     </RelativeLayout>
 

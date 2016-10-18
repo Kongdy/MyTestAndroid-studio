@@ -1,0 +1,8 @@
+//
+// Created by hmyd on 2016/7/6.
+//
+
+#ifndef MYTESTANDROID_STUDIO_MATH_H
+#define MYTESTANDROID_STUDIO_MATH_H
+
+#endif //MYTESTANDROID_STUDIO_MATH_H

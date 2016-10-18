@@ -11,4 +11,6 @@
 
     <color name="trasparent">#00000000</color>
     <color name="m_gray_1">#9ba0a4</color>
+    <color name="holo_orange_dark">#ffff8800</color>
+    <color name="holo_purple">#ffaa66cc</color>
 </resources>

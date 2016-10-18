@@ -32,6 +32,7 @@ public class MainActivity extends BasicActivity {
 
 	private int slipDistance; // 当前滑动距离
 
+
 //	private int[] resids = { R.drawable.__00000, R.drawable.__00001,
 //			R.drawable.__00002, R.drawable.__00003, R.drawable.__00004,
 //			R.drawable.__00005, R.drawable.__00006, R.drawable.__00007,
@@ -117,6 +118,8 @@ public class MainActivity extends BasicActivity {
 		// 设置固定大小
 		//myR.setHasFixedSize(true);
 
+
+		Utils.NumMulti();
 
 		for (int i = 0; i < (resids.size()<1?100:resids.size()); i++) {
 			TModel m = new TModel();
