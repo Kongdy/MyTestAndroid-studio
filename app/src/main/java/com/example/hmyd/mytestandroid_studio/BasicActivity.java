@@ -1,28 +1,20 @@
 package com.example.hmyd.mytestandroid_studio;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.hmyd.mytestandroid_studio.httpmanager.ApiService;
 import com.example.hmyd.mytestandroid_studio.httpmanager.HttpApiBase;
 import com.example.hmyd.mytestandroid_studio.model.BaseModel;
 import com.example.hmyd.mytestandroid_studio.model.TModel;
-import com.example.hmyd.mytestandroid_studio.tools.BitmapHelp;
 import com.example.hmyd.mytestandroid_studio.tools.Utils;
 
 import java.util.Timer;
@@ -73,7 +65,6 @@ public abstract class BasicActivity extends AppCompatActivity
 		AppBasic.getInstance(this).addToActivityStacks(this, label==null?"":label);
 		declareParamsSetting();
 	}
-
 
 
 	private void declareParamsSetting() {
