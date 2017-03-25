@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
 
     <style name="mToolBarTextStyle">
@@ -14,12 +14,14 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
        <!-- <item name="android:actionBarStyle">@style/MyActionBar</item> -->
+        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="tabWithIconStyle">@style/customTabWithIconStyle</item>
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Title</item>
         <!-- 开启透标题栏 ,注意API，这里最低支持API19，即android 4.4-->
         <!--<item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>-->

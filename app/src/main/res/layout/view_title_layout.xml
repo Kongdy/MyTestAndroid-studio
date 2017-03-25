@@ -5,6 +5,8 @@
     android:layout_height="?attr/actionBarSize"
     android:background="@color/title_bg_color"
     android:titleTextColor="@color/white"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <ImageButton
         android:id="@+id/title_left"

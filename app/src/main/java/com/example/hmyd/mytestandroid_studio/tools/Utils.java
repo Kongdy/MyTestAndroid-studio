@@ -406,6 +406,6 @@ public class Utils {
     /**
      * native方法，调用jni
      */
-    public static native void NumMulti();
+  //  public static native void NumMulti();
 
 }

@@ -14,13 +14,13 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main"/>
+            android:label="@string/title_activity_main" />
         <activity
             android:name=".T1Activity"
-            android:label="@string/title_activity_t1"/>
+            android:label="@string/title_activity_t1" />
         <activity
             android:name=".PicPowerActivity"
-            android:label="@string/title_activity_pic_power"/>
+            android:label="@string/title_activity_pic_power" />
         <activity
             android:name=".HomeActivity"
             android:label="@string/app_name">
@@ -30,8 +30,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Game2048Activity"
-            android:label="@string/title_activity_2048"/>
+        <activity
+            android:name=".Game2048Activity"
+            android:label="@string/title_activity_2048" />
+        <activity android:name=".ToolBarActivity"></activity>
     </application>
 
 </manifest>

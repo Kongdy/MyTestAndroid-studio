@@ -12,15 +12,22 @@
     <com.example.hmyd.mytestandroid_studio.view.MyPathPracticeView
         android:id="@+id/myPathP"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/iv_test_img"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@color/holo_orange_dark"
+            android:elevation="20dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/__00006" />
+    <TextView
+        android:layout_below="@id/iv_test_img"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        ></com.example.hmyd.mytestandroid_studio.view.MyPathPracticeView>
+        android:text="占位"/>
 
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/__00006"
-        android:layout_centerInParent="true"
-        android:background="@color/holo_orange_dark"
-        android:elevation="20dp"/>
 </RelativeLayout>

@@ -4,7 +4,6 @@ import com.example.hmyd.mytestandroid_studio.model.TModel;
 
 import retrofit2.Call;
 import retrofit2.http.POST;
-import rx.Observable;
 
 /**
  * @author kongdy
@@ -20,7 +19,5 @@ public class ApiService {
         @POST("")
         Call<TModel> test();
 
-        @POST("")
-        Observable<TModel> test2();
     }
 }

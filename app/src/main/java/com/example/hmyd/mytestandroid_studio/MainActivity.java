@@ -119,7 +119,7 @@ public class MainActivity extends BasicActivity {
 		//myR.setHasFixedSize(true);
 
 
-		Utils.NumMulti();
+		//Utils.NumMulti();
 
 		for (int i = 0; i < (resids.size()<1?100:resids.size()); i++) {
 			TModel m = new TModel();

@@ -117,7 +117,7 @@ public abstract class BasicActivity extends AppCompatActivity
 
             }
         });
-        HttpApiBase.getMyRetrofit().test2()
+       // HttpApiBase.getMyRetrofit().test2()
         ;
     }
 
@@ -146,6 +146,11 @@ public abstract class BasicActivity extends AppCompatActivity
 		return toolbar;
 	}
 
+	/**
+	 *
+	 * @param savedInstanceState
+	 */
+	public abstract void setParams(Bundle savedInstanceState);
 
 	/**
 	 * 点击事件
@@ -153,13 +158,6 @@ public abstract class BasicActivity extends AppCompatActivity
      */
 	@Override
 	public abstract void onClick(View v);
-
-	/**
-	 *
-	 * @param savedInstanceState
-     */
-	public abstract void setParams(Bundle savedInstanceState);
-
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
