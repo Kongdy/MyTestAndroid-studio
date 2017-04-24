@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.hmyd.mytestandroid_studio.DataBindingTestActivity">
+
+    <data>
+        <import type="com.example.hmyd.mytestandroid_studio.tools.Utils"/>
+        <variable
+            name="job"
+            type="com.example.hmyd.mytestandroid_studio.model.JobBean" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/my_tool_bar"
+            layout="@layout/view_title_layout"/>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/srl_content"
+            android:layout_below="@id/my_tool_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/ll_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@drawable/shape_simple_divider"
+                android:showDividers="middle|end"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/aciv_android_logo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/actv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@{job.name}"
+                    android:layout_margin="15dp"
+                    android:textColor="@color/text_black"
+                    android:textSize="18sp" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/actv_job"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@{job.job}"
+                    android:layout_margin="15dp"
+                    android:textColor="@color/text_black"
+                    android:textSize="18sp" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/actv_age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="15dp"
+                    android:text="@{Utils.timeStamToDateString(job.ageTime)}"
+                    android:textColor="@color/text_black"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </RelativeLayout>
+
+</layout>

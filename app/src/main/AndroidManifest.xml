@@ -33,7 +33,9 @@
         <activity
             android:name=".Game2048Activity"
             android:label="@string/title_activity_2048" />
-        <activity android:name=".ToolBarActivity"></activity>
+        <activity android:name=".ToolBarActivity" />
+        <activity android:name=".DataBindingTestActivity"
+            android:label="@string/title_activity_data_binding"/>
     </application>
 
 </manifest>

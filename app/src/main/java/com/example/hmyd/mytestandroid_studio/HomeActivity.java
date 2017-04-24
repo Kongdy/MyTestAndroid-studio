@@ -17,7 +17,8 @@ import android.widget.ListView;
 public class HomeActivity extends BasicActivity {
 
     private String[] function_sets = {"recyclerview的使用,和内存究极优化【MainActivty】","动态浮动标题栏【T1Activity】",
-            "图片处理【PicPowerActivity】","游戏2048【Game2048Activity】","toolbar操作【ToolBarActivity】"};
+            "图片处理【PicPowerActivity】","游戏2048【Game2048Activity】","toolbar操作【ToolBarActivity】",
+                "dataBinding【DataBindingTestActivity】"};
 
     private ListView function_list;
 
@@ -55,6 +56,9 @@ public class HomeActivity extends BasicActivity {
                         break;
                     case 4:
                         intent.setClass(HomeActivity.this,ToolBarActivity.class);
+                        break;
+                    case 5:
+                        intent.setClass(HomeActivity.this,DataBindingTestActivity.class);
                         break;
                     default:
                         break;

@@ -8,6 +8,7 @@
     <string name="title_activity_pic_power">图片处理集合【PicPowerActivity】</string>
     <string name="title_activity_home">首页【HomeActivity】</string>
     <string name="title_activity_2048">游戏2048【Game2048Activity】</string>
+    <string name="title_activity_data_binding">dataBinding【DataBindingTestActivity】</string>
 
 
     <string name="choose_please">请选择功能</string>

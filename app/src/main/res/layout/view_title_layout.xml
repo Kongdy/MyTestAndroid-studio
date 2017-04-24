@@ -2,11 +2,13 @@
 <android.support.v7.widget.Toolbar
     android:id="@+id/my_tool_bar"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
+    android:layout_height="wrap_content"
     android:background="@color/title_bg_color"
     android:titleTextColor="@color/white"
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <ImageButton
         android:id="@+id/title_left"
