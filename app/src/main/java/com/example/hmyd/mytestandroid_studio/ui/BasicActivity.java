@@ -1,4 +1,4 @@
-package com.example.hmyd.mytestandroid_studio;
+package com.example.hmyd.mytestandroid_studio.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +12,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hmyd.mytestandroid_studio.AppBasic;
+import com.example.hmyd.mytestandroid_studio.R;
 import com.example.hmyd.mytestandroid_studio.httpmanager.HttpApiBase;
 import com.example.hmyd.mytestandroid_studio.model.BaseModel;
 import com.example.hmyd.mytestandroid_studio.model.TModel;

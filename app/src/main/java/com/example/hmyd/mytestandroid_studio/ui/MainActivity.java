@@ -1,4 +1,4 @@
-package com.example.hmyd.mytestandroid_studio;
+package com.example.hmyd.mytestandroid_studio.ui;
 
 import java.io.DataOutputStream;
 import java.lang.reflect.Field;
@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.example.hmyd.mytestandroid_studio.R;
 import com.example.hmyd.mytestandroid_studio.adapter.MyRecyclerAdapter;
 import com.example.hmyd.mytestandroid_studio.model.TModel;
 import com.example.hmyd.mytestandroid_studio.tools.Utils;

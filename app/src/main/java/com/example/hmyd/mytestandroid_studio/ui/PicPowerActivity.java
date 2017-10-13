@@ -1,4 +1,4 @@
-package com.example.hmyd.mytestandroid_studio;
+package com.example.hmyd.mytestandroid_studio.ui;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.example.hmyd.mytestandroid_studio.R;
 import com.example.hmyd.mytestandroid_studio.adapter.IndicatorTabWithIconAdapter;
 import com.example.hmyd.mytestandroid_studio.fragment.BlurPicFragment;
 import com.example.hmyd.mytestandroid_studio.fragment.GestureZoomFragment;

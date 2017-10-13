@@ -1,4 +1,4 @@
-package com.example.hmyd.mytestandroid_studio;
+package com.example.hmyd.mytestandroid_studio.ui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.hmyd.mytestandroid_studio.R;
 import com.example.hmyd.mytestandroid_studio.adapter.MyArrayAdapter;
 import com.example.hmyd.mytestandroid_studio.listener.ScrollViewListener;
 import com.example.hmyd.mytestandroid_studio.tools.Utils;

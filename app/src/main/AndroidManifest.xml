@@ -5,6 +5,8 @@
     <!-- sd卡读写权限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 添加读取联系人权限 -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -13,16 +15,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/title_activity_main" />
         <activity
-            android:name=".T1Activity"
+            android:name=".ui.T1Activity"
             android:label="@string/title_activity_t1" />
         <activity
-            android:name=".PicPowerActivity"
+            android:name=".ui.PicPowerActivity"
             android:label="@string/title_activity_pic_power" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".ui.HomeActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,9 +33,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Game2048Activity"
+            android:name=".ui.Game2048Activity"
             android:label="@string/title_activity_2048" />
-        <activity android:name=".ToolBarActivity"></activity>
+        <activity android:name=".ui.ToolBarActivity" />
+        <activity
+            android:name=".ui.DataBindingTestActivity"
+            android:label="@string/title_activity_data_binding" />
+        <activity android:name=".ui.TransAnimActivity" />
+        <activity android:name=".ui.TransAnimFactorActivity" />
+        <activity android:name=".ui.TestActivity">
+        </activity>
+        <activity
+            android:name=".ui.Main2Activity"
+            android:label="@string/title_activity_main2"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".ui.T2Activity"/>
     </application>
 
 </manifest>

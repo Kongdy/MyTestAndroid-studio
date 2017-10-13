@@ -12,6 +12,8 @@ import android.util.TypedValue;
 import android.view.View;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * 工具帮助类
@@ -26,7 +28,7 @@ public class Utils {
 	 * 屏幕高度
 	 */
 	public static int SCREEN_HEIGHT;
-	
+
 	/**
 	 * 初始化屏幕大小
 	 */
@@ -64,7 +66,7 @@ public class Utils {
 
 
     /**
-     * 获取sd卡跟目录
+     * 获取sd卡根目录
      * @return
      */
     public static File getSDCardFile() {
@@ -402,6 +404,17 @@ public class Utils {
 		Allocation overlayAlloc = Allocation.createFromBitmap(rs, sentBitmap);
 	}
 
+	public static String timeStamToDateString(Long timeStamp) {
+        if(timeStamp == null)
+            return "";
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeStamp);
+        Calendar nowCalendar = Calendar.getInstance();
+        if(nowCalendar.getTimeInMillis() - timeStamp <= 0)
+            return "";
+        int yearsOld = nowCalendar.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
+        return String.valueOf(yearsOld)+"岁";
+    }
 
     /**
      * native方法，调用jni

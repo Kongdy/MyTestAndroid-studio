@@ -1,9 +1,10 @@
-package com.example.hmyd.mytestandroid_studio;
+package com.example.hmyd.mytestandroid_studio.ui;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.hmyd.mytestandroid_studio.R;
 import com.example.hmyd.mytestandroid_studio.view.MyPathPracticeView;
 
 import tyrantgit.explosionfield.ExplosionField;
