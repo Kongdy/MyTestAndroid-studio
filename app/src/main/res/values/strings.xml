@@ -10,6 +10,7 @@
     <string name="title_activity_2048">游戏2048【Game2048Activity】</string>
     <string name="title_activity_data_binding">dataBinding【DataBindingTestActivity】</string>
 
+    <string name="do_transition_anim">do transition</string>
 
     <string name="choose_please">请选择功能</string>
     <string name="test">测试0</string>

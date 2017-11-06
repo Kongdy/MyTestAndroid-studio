@@ -6,12 +6,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.AutoTransition;
+import android.transition.ChangeClipBounds;
+import android.transition.Explode;
+import android.transition.Scene;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.example.hmyd.mytestandroid_studio.R;
 import com.example.hmyd.mytestandroid_studio.adapter.MyRecyclerAdapter;
@@ -32,6 +42,11 @@ public class MainActivity extends BasicActivity {
 	private List<TModel> data = new ArrayList<>();
 
 	private int slipDistance; // 当前滑动距离
+
+    private RelativeLayout container;
+
+    private ConstraintLayout cl_to_container;
+    private ImageView i1;
 
 
 //	private int[] resids = { R.drawable.__00000, R.drawable.__00001,
@@ -95,6 +110,10 @@ public class MainActivity extends BasicActivity {
 		setContentView(R.layout.activity_main);
 		myR = (RecyclerView) findViewById(R.id.my_r_view);
         back_top = (ImageButton) findViewById(R.id.back_top);
+        container = (RelativeLayout) findViewById(R.id.container);
+        cl_to_container = (ConstraintLayout) findViewById(R.id.cl_to_container);
+        i1 = (ImageView) findViewById(R.id.i1);
+
         back_top.setOnClickListener(this);
 
 		// 获取drawable资源文件下所有图片
@@ -133,6 +152,39 @@ public class MainActivity extends BasicActivity {
 		Log.d("main", "over constructor");
 		myR.setAdapter(adapter);
 
+        adapter.setClickListener(new MyRecyclerAdapter.ClickListener() {
+            @Override
+            public void onClick(TModel data, MyRecyclerAdapter.MyViewHolder holder, int pos) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+//                    ViewCompat.setTransitionName(holder.i1,"trans"+pos);
+//                    Scene scene = Scene.getSceneForLayout(container,
+//                            R.layout.layout_to_transition,MainActivity.this);
+//                    ImageView i1 = (ImageView) scene.getSceneRoot().findViewById(R.id.i1);
+//                    i1.setImageDrawable(holder.i1.getDrawable());
+//                    ViewCompat.setTransitionName(i1,"trans"+pos);
+//                  //  ChangeClipBounds changeClipBounds = new ChangeClipBounds();
+//                    TransitionManager.go(scene);
+                   // android.support.transition.TransitionManager.
+
+//                    TransitionManager.beginDelayedTransition(container,new AutoTransition());
+//                    cl_to_container.setVisibility(View.VISIBLE);
+//                    i1.setImageDrawable(holder.i1.getDrawable());
+
+//                    ViewCompat.setTransitionName(holder.i1,"trans"+pos);
+//
+//                    TransitionManager.beginDelayedTransition(myR,new Explode());
+//                    myR.setAdapter(null);
+
+                    ViewCompat.setTransitionName(holder.i1,"trans"+pos);
+                    ViewCompat.setTransitionName(i1,"trans"+pos);
+                    Scene scene = new Scene(container,cl_to_container);
+                    i1.setImageDrawable(holder.i1.getDrawable());
+                    TransitionManager.go(scene);
+                    cl_to_container.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         // 滚动事件，滚动距离超过一个屏，显示返回顶部按钮
         myR.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -146,6 +198,7 @@ public class MainActivity extends BasicActivity {
 				}
             }
         });
+
 
        // myR.scrollTo(0,0);
         // 获取root权限

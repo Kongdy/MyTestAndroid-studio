@@ -58,7 +58,9 @@ public class T2Activity extends AppCompatActivity {
         };
 
         rvList.setAdapter(mHeaderAdapter);
-        rvList.addItemDecoration(mDecoration = new SuspensionDecoration(this, contacts).setHeaderViewCount(mHeaderAdapter.getHeaderViewCount()));
+        rvList.addItemDecoration(mDecoration =
+                new SuspensionDecoration(this, contacts)
+                        .setHeaderViewCount(mHeaderAdapter.getHeaderViewCount()));
 
         idbContactIndex.setmLayoutManager(mManager) //设置RecyclerView的LayoutManager
                 .setNeedRealIndex(true)//设置需要真实的索引

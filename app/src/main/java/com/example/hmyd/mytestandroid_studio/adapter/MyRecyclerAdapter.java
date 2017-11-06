@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +38,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
 
 	private List<Integer> visibleItem; // 当前屏幕显示item
 
-
+    private ClickListener clickListener;
 
 	public MyRecyclerAdapter(final Context mContext, final List<TModel> data, final RecyclerView myR) {
 		isScrolled = false;
@@ -91,9 +92,25 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
 		if(!isScrolled && holder.i1.getTag()!= null && (data.get(i).resid+"").equals(holder.i1.getTag())) {
 			BitmapHelp.getInstance(mContext).displayBitmapFromResource(data.get(i).resid,holder.i1);
 		}
+
+		holder.content.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(clickListener != null)
+                    clickListener.onClick(data.get(i),holder,i);
+            }
+        });
 	}
 
-	@Override
+    public ClickListener getClickListener() {
+        return clickListener;
+    }
+
+    public void setClickListener(ClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
+
+    @Override
 	public ViewHolder onCreateViewHolder(ViewGroup viewgroup, int position) {
 		Log.d("madapter", "create:"+position);
 		View view = LayoutInflater.from(viewgroup.getContext()).inflate(R.layout.view_recycler_layout, viewgroup,false);
@@ -103,7 +120,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
 		return new MyViewHolder(view);
 	}
 	
-	class MyViewHolder extends ViewHolder implements OnClickListener {
+	public class MyViewHolder extends ViewHolder implements OnClickListener {
 		
 		public TextView t1;
 		
@@ -111,10 +128,13 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
 		
 		public int positon;
 
+		public RelativeLayout content;
+
 		public MyViewHolder(View itemView) {
 			super(itemView);
 			t1 = (TextView) itemView.findViewById(R.id.t1);
 			i1 = (ImageView) itemView.findViewById(R.id.i1);
+            content = (RelativeLayout) itemView.findViewById(R.id.content);
 			itemView.setOnClickListener(this);
 		}
 
@@ -132,5 +152,9 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
 			return 0;
 		}
 	}
+
+	public interface ClickListener{
+	    void onClick(TModel data,MyViewHolder holder,int pos);
+    }
 
 }

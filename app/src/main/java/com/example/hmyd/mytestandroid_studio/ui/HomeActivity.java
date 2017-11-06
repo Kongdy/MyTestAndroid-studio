@@ -19,7 +19,7 @@ public class HomeActivity extends BasicActivity {
 
     private String[] function_sets = {"recyclerview的使用,和内存究极优化【MainActivty】","动态浮动标题栏【T1Activity】",
             "图片处理【PicPowerActivity】","游戏2048【Game2048Activity】","toolbar操作【ToolBarActivity】",
-                "dataBinding【DataBindingTestActivity】","测试大图片加载","仿微信通讯录"};
+                "dataBinding【DataBindingTestActivity】","测试大图片加载","仿微信通讯录","transition动画"};
 
     private ListView function_list;
 
@@ -62,6 +62,9 @@ public class HomeActivity extends BasicActivity {
                     break;
                 case 7:
                     intent.setClass(HomeActivity.this,T2Activity.class);
+                    break;
+                case 8:
+                    intent.setClass(HomeActivity.this,TransitionActivity.class);
                     break;
                 default:
                     break;

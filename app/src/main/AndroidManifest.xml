@@ -41,13 +41,13 @@
             android:label="@string/title_activity_data_binding" />
         <activity android:name=".ui.TransAnimActivity" />
         <activity android:name=".ui.TransAnimFactorActivity" />
-        <activity android:name=".ui.TestActivity">
-        </activity>
+        <activity android:name=".ui.TestActivity"></activity>
         <activity
             android:name=".ui.Main2Activity"
             android:label="@string/title_activity_main2"
             android:theme="@style/AppTheme" />
-        <activity android:name=".ui.T2Activity"/>
+        <activity android:name=".ui.T2Activity" />
+        <activity android:name=".ui.TransitionActivity"></activity>
     </application>
 
 </manifest>

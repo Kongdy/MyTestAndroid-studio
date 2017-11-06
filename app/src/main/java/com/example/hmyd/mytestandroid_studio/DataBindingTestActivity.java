@@ -7,8 +7,10 @@ import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.hmyd.mytestandroid_studio.databinding.ActivityDataBindingTestBinding;
 import com.example.hmyd.mytestandroid_studio.model.JobBean;
+import com.example.hmyd.mytestandroid_studio.ui.BasicActivity;
 
 
 /**
@@ -25,7 +27,7 @@ public class DataBindingTestActivity extends BasicActivity implements SwipeRefre
 
     @Override
     public void setParams(Bundle savedInstanceState) {
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_data_binding_test);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_data_binding_test);
 
         binding.srlContent.setColorSchemeResources(R.color.colorPrimary);
 
@@ -40,16 +42,17 @@ public class DataBindingTestActivity extends BasicActivity implements SwipeRefre
 
     @Override
     public void onRefresh() {
-        getWindow().getDecorView().postDelayed(()->{
-            Long time = System.currentTimeMillis()-((refresh_count++)+24L)*31536000000L;
+        getWindow().getDecorView().postDelayed(() -> {
+            Long time = System.currentTimeMillis() - ((refresh_count++) + 24L) * 31536000000L;
             binding.srlContent.setRefreshing(false);
-            jobBean = new JobBean("Kongdy","安卓开发",time,"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1493029351955&di=0c8cac5193055bd007b36515f75c7227&imgtype=0&src=http%3A%2F%2Fupload.chinaz.com%2F2016%2F0414%2F1460598808209.png");
+            jobBean = new JobBean("Kongdy", "安卓开发", time, "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1493029351955&di=0c8cac5193055bd007b36515f75c7227&imgtype=0&src=http%3A%2F%2Fupload.chinaz.com%2F2016%2F0414%2F1460598808209.png");
             binding.setJob(jobBean);
             Glide.with(getApplicationContext())
                     .load(jobBean.getImage())
-                    .skipMemoryCache(false)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .apply(new RequestOptions()
+                            .skipMemoryCache(false)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL))
                     .into(binding.acivAndroidLogo);
-        },2000);
+        }, 2000);
     }
 }
