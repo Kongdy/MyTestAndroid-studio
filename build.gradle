@@ -1,7 +1,47 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.1.51'
+    // 统一项目全局版本
+    ext.versions = [
+            'minSdk'               : 16,
+            'compileSdk'           : 27,
+            'kotlin'               : '1.2.10',
+            'supportLib'           : '27.0.2',
+            'androidGradleToolsVer': '3.0.1',
+            'androidToolsVer'      : '26.0.1',
+            'retrofitVer'          : '2.3.0',
+            // 本lib的版本号
+            'releaseVer'           : '1.0.0'
+    ]
+
+    ext.deps = [
+            android  : [
+                    'gradlePlugin': "com.android.tools.build:gradle:${versions.androidGradleToolsVer}"
+            ],
+            'support': [
+                    'compat'               : "com.android.support:appcompat-v7:${versions.supportLib}",
+                    'cardView'             : "com.android.support:cardview-v7:${versions.supportLib}",
+                    'recyclerView'         : "com.android.support:recyclerview-v7:${versions.supportLib}",
+                    'design'               : "com.android.support:design:${versions.supportLib}",
+                    'supportVectorDrawable': "com.android.support:support-vector-drawable:${versions.supportLib}",
+                    'constraintLayout':"com.android.support.constraint:constraint-layout:1.0.2"
+            ],
+            'auto'   : [
+                    'common': 'com.google.auto:auto-common:0.9',
+            ],
+            'net'    : [
+                    'retrofit': "com.squareup.retrofit2:retrofit:${versions.retrofitVer}",
+                    'converter' : "com.squareup.retrofit2:converter-gson:${versions.retrofitVer}"
+            ],
+            'rxJava' : 'io.reactivex.rxjava2:rxjava:2.1.5',
+            'rxAndroid' : 'io.reactivex.rxjava2:rxandroid:2.0.1',
+            'glide' : 'com.github.bumptech.glide:glide:4.0.0',
+            'explosionfield' : 'tyrantgit:explosionfield:1.0.1',
+            'BaseRecyclerViewAdapterHelper' : 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.31',
+            'SwipeDelMenuLayout' : 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0',
+            'SuspensionIndexBar' : 'com.github.mcxtzhang:SuspensionIndexBar:V1.0.0'
+    ]
+
     repositories {
         jcenter()
         maven {
@@ -10,8 +50,8 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath deps.android.gradlePlugin
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
