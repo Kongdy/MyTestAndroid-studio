@@ -27,6 +27,7 @@ buildscript {
                     'constraintLayout':"com.android.support.constraint:constraint-layout:1.0.2"
             ],
             'auto'   : [
+                    'service' : 'com.google.auto.service:auto-service:1.0-rc4',
                     'common': 'com.google.auto:auto-common:0.9',
             ],
             'net'    : [
@@ -39,7 +40,9 @@ buildscript {
             'explosionfield' : 'tyrantgit:explosionfield:1.0.1',
             'BaseRecyclerViewAdapterHelper' : 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.31',
             'SwipeDelMenuLayout' : 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0',
-            'SuspensionIndexBar' : 'com.github.mcxtzhang:SuspensionIndexBar:V1.0.0'
+            'SuspensionIndexBar' : 'com.github.mcxtzhang:SuspensionIndexBar:V1.0.0',
+            // 能够自动生成java文件的框架
+            'javapoet' : 'com.squareup:javapoet:1.9.0'
     ]
 
     repositories {

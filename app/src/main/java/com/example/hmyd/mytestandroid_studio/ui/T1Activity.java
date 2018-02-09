@@ -3,6 +3,7 @@ package com.example.hmyd.mytestandroid_studio.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Base64;
@@ -55,7 +56,7 @@ public class T1Activity extends BasicActivity {
 	/**
 	 * 可以判断屏幕遮挡
 	 */
-	private void screenControll(final View view) {
+    private void screenControll(final View view) {
 		mGlobalLayoutListener = new OnGlobalLayoutListener() {
 
 			@Override

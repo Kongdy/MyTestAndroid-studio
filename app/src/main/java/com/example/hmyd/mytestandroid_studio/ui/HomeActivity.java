@@ -2,6 +2,7 @@ package com.example.hmyd.mytestandroid_studio.ui;
 
 import com.example.hmyd.mytestandroid_studio.R;
 import com.example.hmyd.mytestandroid_studio.adapter.MySimpleAdapter;
+import com.kongdy.appannotation.annotation.Test;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ public class HomeActivity extends BasicActivity {
     private ListView function_list;
 
     @Override
+    @Test
     public void onClick(View v) {
 
     }

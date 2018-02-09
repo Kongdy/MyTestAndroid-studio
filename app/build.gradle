@@ -17,6 +17,13 @@ android {
             enabled true
         }
 
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+            }
+        }
+
         externalNativeBuild {
             cmake {
                 cppFlags ""
@@ -60,6 +67,7 @@ dependencies {
     implementation deps.SwipeDelMenuLayout
     implementation deps.SuspensionIndexBar
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:${versions.kotlin}"
+    implementation project(':appAnnotation')
 }
 repositories {
     mavenCentral()
